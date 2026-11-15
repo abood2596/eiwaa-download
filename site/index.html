@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>إيواء · سجلّ المخيم في جوالك</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إيواء · نظام إدارة مراكز الإيواء</title>
 <meta name="description" content="إيواء نظام لإدارة مراكز الإيواء: سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، ومجاني للمخيمات.">
 <meta name="theme-color" content="#0F2747">
 <meta property="og:title" content="إيواء · منظومة واحدة، لكل المخيمات">
@@ -11,266 +11,381 @@
 <meta property="og:image" content="img/og.jpg">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" href="fonts/plex_bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:Plex;font-weight:300;font-display:swap;src:url(fonts/plex_light.woff2) format("woff2")}
 @font-face{font-family:Plex;font-weight:400;font-display:swap;src:url(fonts/plex_regular.woff2) format("woff2")}
 @font-face{font-family:Plex;font-weight:500;font-display:swap;src:url(fonts/plex_medium.woff2) format("woff2")}
 @font-face{font-family:Plex;font-weight:600;font-display:swap;src:url(fonts/plex_semibold.woff2) format("woff2")}
 @font-face{font-family:Plex;font-weight:700;font-display:swap;src:url(fonts/plex_bold.woff2) format("woff2")}
-@font-face{font-family:PlexMono;font-display:swap;src:url(fonts/plex_mono.woff2) format("woff2")}
-:root{--paper:#F4F1EA;--sheet:#FBFAF6;--rule:#E2DCCF;--ink:#0E1726;--ink2:#4A5466;--ink3:#8790A0;--tarp:#1D4E8F;--night:#0F2747;--night2:#0B1D36;--stamp:#B42318;--amber:#9A5A06;--ok:#2E6A4D;--mono:PlexMono,ui-monospace,Menlo,monospace;--ease:cubic-bezier(.2,.8,.2,1)}
+@font-face{font-family:Mono;font-display:swap;src:url(fonts/plex_mono.woff2) format("woff2")}
+:root{
+  --paper:#F3F0E8;--sheet:#FBFAF6;--rule:#DED7C8;--rule2:#ECE7DC;--ink:#0E1726;--ink2:#465163;--ink3:#7F8899;
+  --tarp:#1D4E8F;--tarp2:#163E73;--night:#0F2747;--night2:#0A1B33;--line:#24406A;--mist:#B9C8DE;--mist2:#8197B8;
+  --red:#B42318;--redbg:#FBEBE9;--amber:#93560A;--amberbg:#FAF0DF;--green:#2B6649;--greenbg:#E3F0E8;--wa:#1E6B42;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{font-family:Plex,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased}
-img{max-width:100%;height:auto;display:block}
+html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
+body{font-family:Plex,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%;display:block}
 a{color:inherit}
-.mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
-.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
-.skip{position:absolute;right:-999px;top:8px;background:#fff;padding:8px 14px;border-radius:8px;z-index:99}.skip:focus{right:8px}
-:focus-visible{outline:3px solid #7AA9E6;outline-offset:3px;border-radius:6px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:12px;font:600 17px/1 Plex,sans-serif;text-decoration:none;border:0;cursor:pointer;transition:transform .15s var(--ease),background .2s}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.m{font-family:Mono,ui-monospace,monospace;direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.skip{position:absolute;right:-999px;top:8px;background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;z-index:99}.skip:focus{right:8px}
+:focus-visible{outline:3px solid #6FA0E0;outline-offset:3px;border-radius:8px}
+[hidden]{display:none!important}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:12px;font-weight:600;font-size:16.5px;line-height:1;text-decoration:none;white-space:nowrap;transition:transform .15s var(--ease),background-color .2s,border-color .2s,color .2s}
 .btn:active{transform:scale(.97)}
 .btn svg{width:20px;height:20px;flex:none}
-.b-paper{background:var(--sheet);color:var(--night)}.b-paper:hover{background:#fff}
-.b-line{border:1.5px solid rgba(255,255,255,.4);color:#fff;background:transparent}.b-line:hover{border-color:#fff}
-.b-tarp{background:var(--tarp);color:#fff}.b-tarp:hover{background:#173f75}
-.b-wa{background:#1F6E43;color:#fff}.b-wa:hover{background:#185836}
+.b-light{background:var(--sheet);color:var(--night)}.b-light:hover{background:#fff}
+.b-ghost{border:1.5px solid var(--line);color:#fff}.b-ghost:hover{border-color:var(--mist2)}
+.b-tarp{background:var(--tarp);color:#fff}.b-tarp:hover{background:var(--tarp2)}
+.b-wa{background:var(--wa);color:#fff}.b-wa:hover{background:#185636}
 
 /* header: fully opaque */
-.top{position:sticky;top:0;z-index:40;background:var(--night);border-bottom:1px solid #1E3658}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
-.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:20px}
-.logo img{width:32px;height:32px;border-radius:8px}
-.top .btn{min-height:40px;padding:0 16px;font-size:15px}
+.top{position:sticky;top:0;z-index:50;background:var(--night);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:20px;margin-inline-end:auto}
+.logo img{width:34px;height:34px;border-radius:9px}
+.seg{display:flex;background:var(--night2);border:1px solid var(--line);border-radius:12px;padding:3px;position:relative}
+.seg button{position:relative;z-index:1;color:var(--mist);font-size:14.5px;font-weight:600;padding:0 14px;height:36px;border-radius:9px;transition:color .25s}
+.seg button[aria-pressed=true]{color:var(--night)}
+.seg i{position:absolute;top:3px;bottom:3px;right:3px;width:0;border-radius:9px;background:var(--sheet);transition:right .35s var(--ease),width .35s var(--ease)}
+.top .btn{min-height:40px;padding:0 16px;font-size:14.5px}
+.top .dl-ico{display:none}
 
 /* hero */
-.cover{background:var(--night);color:#fff;padding:64px 0 0}
-.cover .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end}
-.kick{font-size:14px;color:#9FB3D1;margin-bottom:18px;display:flex;gap:12px;align-items:center}
-.kick .mono{border:1px solid #2D4A72;border-radius:6px;padding:2px 9px}
-h1{font-size:clamp(38px,6vw,68px);line-height:1.12;font-weight:700;letter-spacing:-.5px}
-h1 span{font-weight:300;color:#BFD0E8}
-.lede{font-size:clamp(17px,2vw,19.5px);color:#C8D4E6;max-width:500px;margin:20px 0 30px}
-.paths{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;padding-bottom:64px}
-.path{all:unset;cursor:pointer;display:block;border:1.5px solid #2D4A72;border-radius:14px;padding:16px 18px;transition:border-color .2s,background .2s,transform .15s}
-.path:hover{border-color:#7FA0CC}
-.path:active{transform:scale(.98)}
-.path[aria-selected=true]{background:var(--sheet);color:var(--night);border-color:var(--sheet)}
-.path b{display:block;font-size:18px}
-.path small{font-size:14px;opacity:.75}
-.path:focus-visible{outline:3px solid #7AA9E6;outline-offset:3px}
-.hero-dev{justify-self:center;width:250px;margin-bottom:-90px;position:relative;z-index:2}
-.dev{border-radius:32px;border:8px solid #13294A;overflow:hidden;background:#fff;box-shadow:0 24px 50px rgba(11,29,54,.35)}
-.stamp{position:absolute;font-weight:700;letter-spacing:.5px;border:3px solid currentColor;border-radius:10px;padding:3px 13px;background:var(--sheet);transform:rotate(-9deg);white-space:nowrap}
-.hero-dev .stamp{top:70px;right:-46px;color:var(--ok);font-size:17px}
-.thud{opacity:0}
-.thud.in{animation:thud .45s var(--ease) forwards}
-@keyframes thud{0%{opacity:0;transform:rotate(-9deg) scale(1.9)}60%{opacity:1;transform:rotate(-9deg) scale(.94)}100%{opacity:1;transform:rotate(-9deg) scale(1)}}
+.hero{background:var(--night);color:#fff;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px);background-size:100% 48px;opacity:.28;pointer-events:none}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:72px;padding-bottom:84px}
+.kick{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--mist);margin-bottom:22px}
+.kick .m{border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12.5px;color:var(--mist2)}
+h1{font-size:clamp(40px,6vw,74px);line-height:1.1;font-weight:700;letter-spacing:-.6px}
+h1 .lt{display:block;font-weight:300;color:var(--mist)}
+.lede{font-size:clamp(17px,1.9vw,19.5px);color:#C9D5E7;max-width:520px;margin:22px 0 32px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.fine{font-size:14px;color:var(--mist2);margin-top:16px}
+
+/* ID check card */
+.idc{background:var(--sheet);color:var(--ink);border-radius:20px;padding:24px;position:relative;box-shadow:0 30px 60px rgba(4,12,26,.45)}
+.idc-hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.idc-hd b{font-size:17px}.idc-hd span{font-size:12.5px;color:var(--ink3)}
+.idc label{display:block;font-size:14px;color:var(--ink2);margin:16px 0 8px}
+.idc input{width:100%;font:500 30px/1 Mono,monospace;letter-spacing:.3em;direction:ltr;text-align:left;padding:14px 16px;border:1.5px solid var(--rule);border-radius:12px;background:#fff;color:var(--ink);transition:border-color .2s}
+.idc input::placeholder{color:#CFC8B9}
+.idc input:focus{outline:none;border-color:var(--tarp)}
+.idc input:focus-visible{outline:3px solid #6FA0E0;outline-offset:2px}
+.res{min-height:52px;display:flex;align-items:center;font-size:15px;color:var(--ink2);margin-top:8px;line-height:1.5}
+.res b{font-weight:600;margin-inline-end:4px}
+.res.ok{color:var(--green)}.res.bad{color:var(--amber)}.res.dup{color:var(--red)}
+.tries{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tries button{font-size:13.5px;border:1px solid var(--rule);border-radius:999px;padding:7px 13px;color:var(--ink2);background:#fff;transition:border-color .2s}
+.tries button:hover{border-color:var(--ink3)}
+.reg div{display:grid;grid-template-columns:56px 1fr 104px;gap:10px;align-items:center;padding:9px 6px;border-top:1px solid var(--rule2);font-size:14.5px;border-radius:8px;transition:background-color .3s}
+.reg .m{font-size:13px;color:var(--ink3)}
+.reg .hit{background:var(--redbg)}
+#stampbox .stamp{top:-18px;left:18px;font-size:17px}
+
+.stamp{position:absolute;font-weight:700;font-size:16px;border:3px solid currentColor;border-radius:10px;padding:2px 12px;background:var(--sheet);transform:rotate(-8deg);white-space:nowrap;pointer-events:none}
+.s-ok{color:var(--green)}.s-bad{color:var(--amber)}.s-dup{color:var(--red)}
+.thud{animation:thud .42s var(--ease) both}
+@keyframes thud{0%{opacity:0;transform:rotate(-8deg) scale(1.8)}60%{opacity:1;transform:rotate(-8deg) scale(.95)}100%{opacity:1;transform:rotate(-8deg) scale(1)}}
 
 /* sections */
-.pg{padding:88px 0}
-.label{font-size:14px;color:var(--ink3);display:flex;gap:12px;align-items:center;margin-bottom:14px}
-.label .mono{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:1px 9px}
-h2{font-size:clamp(28px,4vw,42px);line-height:1.25;font-weight:700;letter-spacing:-.3px;max-width:720px}
-.intro{color:var(--ink2);font-size:18px;max-width:600px;margin-top:12px}
-.track[hidden]{display:none}
-.first{padding-top:150px}
+.sec{padding:104px 0}
+.alt{background:var(--sheet);border-block:1px solid var(--rule)}
+.hd{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-bottom:44px}
+.hd.one{grid-template-columns:1fr;gap:14px}
+.no{font-size:13px;color:var(--ink3);border-top:2px solid var(--ink);padding-top:10px;align-self:start;width:100%}
+.hd.one .no{width:64px}
+h2{font-size:clamp(30px,4.2vw,48px);line-height:1.2;font-weight:700;letter-spacing:-.4px;max-width:760px}
+.sub{color:var(--ink2);font-size:18px;max-width:620px;margin-top:12px}
 
-/* before/after slider */
-.ba{position:relative;margin-top:40px;border-radius:18px;overflow:hidden;border:1px solid var(--rule);background:var(--sheet);user-select:none;touch-action:pan-y;direction:ltr}
-.ba-layer{padding:24px 26px 26px;direction:rtl}
-.ba-after{position:absolute;inset:0;background:var(--sheet);clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
-.ba h3{font-size:15px;font-weight:600;color:var(--ink2);display:flex;justify-content:space-between;margin-bottom:8px}
-.r{display:grid;grid-template-columns:1fr 112px 92px;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule);font-size:15.5px;align-items:center}
-.r:last-child{border:0}
-.ba-before .r{border-bottom-style:dashed;color:#3b4456}
-.ba-before .hl{background:#FBEBE9}
-.ba-before s{text-decoration-color:var(--stamp);text-decoration-thickness:2px;color:var(--ink3)}
+/* before / after */
+.ba{position:relative;border:1px solid var(--rule);border-radius:20px;overflow:hidden;background:var(--sheet);direction:ltr;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.ba-l{direction:rtl;padding:24px 28px 72px}
+.ba-after{position:absolute;inset:0;background:#fff;clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
+.ba h3{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.row{display:grid;grid-template-columns:1fr 116px 104px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule2);font-size:15.5px}
+.ba-before .row{border-bottom:1px dashed var(--rule)}
+.ba-before .hl{background:var(--redbg)}
+.ba-before s{text-decoration-color:var(--red);text-decoration-thickness:2px;color:var(--ink3)}
 .q{color:var(--amber);font-weight:600}
-.tag{font-size:12.5px;font-weight:600;text-align:center;border-radius:6px;padding:2px 0}
-.t-ok{color:var(--ok);background:#E4F1EA}.t-am{color:var(--amber);background:#FBF1E1}.t-st{color:var(--stamp);background:#FBEBE9}
-.ba-handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--night);pointer-events:none}
-.ba-handle:after{content:"";position:absolute;top:50%;left:50%;width:42px;height:42px;margin:-21px 0 0 -21px;border-radius:50%;background:var(--night);box-shadow:0 0 0 4px var(--sheet)}
-.ba-handle i{position:absolute;top:50%;left:50%;z-index:1;transform:translate(-50%,-50%);color:#fff;font-style:normal;font-size:15px;letter-spacing:6px}
+.tag{font-size:12.5px;font-weight:600;text-align:center;border-radius:6px;padding:3px 8px}
+.t-ok{color:var(--green);background:var(--greenbg)}.t-am{color:var(--amber);background:var(--amberbg)}.t-st{color:var(--red);background:var(--redbg)}
+.ba .stamp{bottom:20px}
+.ba-before .stamp{right:24px;color:var(--red)}
+.ba-after .stamp{left:24px;color:var(--green)}
+.bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;margin-left:-1px;background:var(--night);pointer-events:none}
+.knob{position:absolute;top:50%;left:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:var(--night);border:4px solid #fff;display:grid;place-items:center;color:#fff}
+.knob svg{width:22px;height:22px}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
-.ba .stamp{bottom:18px;font-size:15px}
-.ba-before .stamp{right:22px;color:var(--stamp)}
-.ba-after .stamp{left:22px;color:var(--ok)}
-.hint{font-size:14px;color:var(--ink3);margin-top:12px}
+.ba input:focus-visible~.bar .knob{outline:3px solid #6FA0E0;outline-offset:3px}
+.cap2{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink3);margin-top:12px}
 
-/* sticky phone journey */
-.journey{display:grid;grid-template-columns:1fr 300px;gap:64px;margin-top:24px}
-.phone{position:sticky;top:100px;align-self:start;height:calc(100vh - 140px);max-height:640px;display:flex;align-items:center;justify-content:center}
-.phone .dev{position:relative;width:270px;aspect-ratio:540/1170}
-.phone .dev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s var(--ease)}
-.phone .dev img.on{opacity:1}
-.phone .dots{position:absolute;bottom:0;display:flex;gap:6px}
-.dots b{width:7px;height:7px;border-radius:50%;background:var(--rule);transition:background .3s,width .3s}
-.dots b.on{background:var(--night);width:20px;border-radius:4px}
-.step{min-height:72vh;display:flex;flex-direction:column;justify-content:center;opacity:.28;transition:opacity .4s}
-.step.on{opacity:1}
-.step .code{font-size:13px;color:var(--tarp)}
-.step h3{font-size:clamp(24px,3vw,30px);line-height:1.3;margin:6px 0 10px}
-.step p{color:var(--ink2);max-width:440px}
+/* story: sticky phone (desktop), swipe (mobile) */
+.story{display:grid;grid-template-columns:1fr 320px;gap:72px}
+.phone{position:sticky;top:96px;align-self:start;height:calc(100vh - 128px);max-height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.dev{position:relative;width:290px;aspect-ratio:540/1170;border-radius:36px;border:9px solid var(--night);background:#fff;overflow:hidden;box-shadow:0 26px 50px rgba(15,39,71,.2)}
+.dev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--ease)}
+.dev img.on{opacity:1}
+.prog{display:flex;gap:6px}
+.prog b{width:8px;height:8px;border-radius:4px;background:var(--rule);transition:width .3s var(--ease),background-color .3s}
+.prog b.on{width:24px;background:var(--night)}
+.st{min-height:78vh;display:flex;flex-direction:column;justify-content:center;opacity:.25;transition:opacity .4s}
+.st.on{opacity:1}
+.st figure{display:none}
+.st>.m{font-size:13px;color:var(--tarp)}
+.st h3{font-size:clamp(25px,3vw,34px);line-height:1.25;margin:8px 0 12px}
+.st p{color:var(--ink2);max-width:460px}
+.st ul{list-style:none;margin-top:14px}
+.st li{padding:6px 20px 6px 0;position:relative;font-size:15.5px;color:var(--ink2)}
+.st li:before{content:"";position:absolute;right:0;top:17px;width:10px;height:2px;background:var(--tarp)}
+.swipe{display:none}
 
-/* horizontal cards */
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
-.card{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:22px}
-.card .mono{font-size:13px;color:var(--tarp)}
-.card h3{font-size:18px;margin:8px 0 4px}
-.card p{font-size:15px;color:var(--ink2);line-height:1.6}
-.soon{font-size:12px;font-weight:600;color:var(--amber);border:1px solid currentColor;border-radius:5px;padding:0 6px;margin-inline-start:6px}
+/* offline demo */
+.off{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.panel{background:#fff;border:1px solid var(--rule);border-radius:20px;padding:22px}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--rule2)}
+.sw{display:inline-flex;align-items:center;gap:12px;font-weight:600;font-size:15.5px;min-height:44px}
+.sw .tr{width:52px;height:30px;border-radius:15px;background:var(--rule);position:relative;transition:background-color .25s}
+.sw .tr:after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:right .25s var(--ease)}
+.sw[aria-checked=true] .tr{background:var(--green)}
+.sw[aria-checked=true] .tr:after{right:25px}
+.net{font-size:13.5px;font-weight:600;padding:4px 12px;border-radius:999px}
+.net.on{color:var(--green);background:var(--greenbg)}.net.off{color:var(--amber);background:var(--amberbg)}
+.ol{list-style:none;min-height:226px;padding:4px 0}
+.ol li{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--rule2);font-size:15px;animation:in .35s var(--ease) both}
+.ol li.empty{display:block;border:0;animation:none;color:var(--ink3);font-size:14.5px;padding:20px 4px}
+.ol .m{font-size:13px;color:var(--ink3)}
+@keyframes in{from{opacity:0;transform:translateY(-8px)}}
+.pf{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid var(--rule2)}
+.pf small{font-size:14.5px;color:var(--ink2)}
+.pf .btn{min-height:46px;font-size:15.5px}
 
-/* counters */
-.nums{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink);margin-top:40px}
-.nums div{padding:20px 0;border-bottom:1px solid var(--rule)}
-.nums b{font:300 clamp(40px,5vw,56px)/1 Plex;color:var(--tarp);display:block;margin-bottom:8px}
-.nums span{color:var(--ink2);font-size:15.5px}
-
-/* film + install */
+/* films */
 .film{background:var(--night);color:#fff}
-.film .wrap{display:grid;grid-template-columns:1fr 320px;gap:56px;align-items:center}
-.film .label{color:#8EA3C2}.film .label .mono{background:transparent;border-color:#2D4A72}
-.film .intro{color:#C8D4E6}
-video{width:100%;aspect-ratio:9/16;border-radius:24px;background:#000}
-.install{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
-.install div{border-top:2px solid var(--ink);padding-top:14px}
-.install .n{font:300 40px/1 Plex;color:var(--tarp)}
-.install h3{font-size:18px;margin:10px 0 4px}
-.install p{font-size:15px;color:var(--ink2)}
-.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center}
-.row small{color:var(--ink3);font-size:14px}
+.film .no{color:var(--mist2);border-color:var(--mist)}
+.film .sub{color:#C9D5E7}
+.f1{display:grid;grid-template-columns:1fr 340px;gap:72px;align-items:center}
+.vphone{border-radius:34px;border:9px solid #1B355C;overflow:hidden;background:#000;aspect-ratio:9/16}
+.vwide{border-radius:18px;border:1px solid var(--line);overflow:hidden;aspect-ratio:16/9;background:#000}
+.vphone video,.vwide video{width:100%;height:100%;object-fit:cover;background:#000}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:36px}
+.facts div{padding:16px 0 0;font-size:14px;color:var(--mist2)}
+.facts b{display:block;color:#fff;font-size:18px;font-weight:600}
 
-/* org chain */
-.chain{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--rule);border-radius:16px;overflow:hidden;background:var(--sheet);margin-top:36px}
-.chain div{padding:20px 18px;border-left:1px solid var(--rule)}
-.chain div:last-child{border-left:0}
-.chain .mono{font-size:13px;color:var(--tarp)}
-.chain h3{font-size:17px;margin:6px 0 2px}
-.chain p{font-size:14px;color:var(--ink2);line-height:1.55}
-.offer{margin-top:40px;background:var(--night);color:#fff;border-radius:18px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:22px;align-items:center}
-.offer h3{font-size:24px}.offer p{color:#C8D4E6}
+/* install */
+.inst{display:grid;grid-template-columns:1fr 1fr 1fr 220px;gap:28px;align-items:start}
+.inst .s{border-top:2px solid var(--ink);padding-top:14px}
+.inst .n{font:300 44px/1 Plex;color:var(--tarp)}
+.inst h3{font-size:18.5px;margin:12px 0 4px}
+.inst p{font-size:15px;color:var(--ink2)}
+.qr{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:18px;text-align:center}
+.qr img{width:150px;height:150px;margin:0 auto 10px}
+.qr small{font-size:13.5px;color:var(--ink2)}
+.dlrow{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;margin-top:36px}
+.dlrow small{font-size:14px;color:var(--ink3)}
+
+/* org */
+.chain{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
+.chain:before{content:"";position:absolute;top:11px;right:10%;left:10%;height:2px;background:var(--rule)}
+.chain li{position:relative;padding:0 12px;text-align:center}
+.chain li:before{content:"";display:block;width:24px;height:24px;margin:0 auto 18px;border-radius:50%;background:var(--paper);border:2px solid var(--tarp);position:relative;z-index:1}
+.chain li:last-child:before{background:var(--tarp)}
+.chain h3{font-size:18px}
+.chain p{font-size:14.5px;color:var(--ink2);line-height:1.55;margin-top:4px}
+.spec{border-top:2px solid var(--ink)}
+.spec>div{display:grid;grid-template-columns:110px 280px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.spec .m{font-size:13px;color:var(--tarp)}
+.spec h3{font-size:18.5px}
+.spec p{color:var(--ink2);font-size:16px}
+.soon{font-size:12px;font-weight:600;color:var(--amber);border:1px solid currentColor;border-radius:5px;padding:0 6px;margin-inline-start:8px;vertical-align:2px}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
+.trust div{border-top:2px solid var(--ink);padding-top:14px}
+.trust h3{font-size:18px;margin-bottom:4px}
+.trust p{font-size:15.5px;color:var(--ink2)}
+.offer{margin-top:64px;background:var(--night);color:#fff;border-radius:22px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
+.offer h3{font-size:clamp(23px,2.6vw,30px);line-height:1.3}
+.offer p{color:#C9D5E7;margin-top:6px}
 
 /* faq + close */
-.faq{max-width:780px;margin-top:28px;border-top:2px solid var(--ink)}
+.faq{max-width:820px;border-top:2px solid var(--ink)}
 details{border-bottom:1px solid var(--rule)}
 summary{list-style:none;cursor:pointer;padding:20px 0;font-weight:600;font-size:17.5px;display:flex;justify-content:space-between;gap:16px}
 summary::-webkit-details-marker{display:none}
-summary:after{content:"+";font-weight:300;font-size:26px;line-height:1;color:var(--tarp);transition:transform .25s var(--ease)}
+summary:after{content:"+";font-weight:300;font-size:28px;line-height:.9;color:var(--tarp);transition:transform .25s var(--ease)}
 details[open] summary:after{transform:rotate(45deg)}
-details p{padding:0 0 20px;color:var(--ink2)}
-.close{background:var(--night);color:#fff;text-align:center;padding:96px 0}
-.close h2{margin:0 auto}
-.close .intro{color:#C8D4E6;margin-inline:auto}
-.close .row{justify-content:center}
-footer{background:var(--night2);color:#7E93B4;font-size:14px;padding:22px 0;text-align:center}
+details p{padding:0 0 20px;color:var(--ink2);max-width:680px}
+.close{background:var(--night);color:#fff;padding:112px 0;text-align:center}
+.close h2{margin:0 auto;font-size:clamp(34px,5vw,58px)}
+.close p{color:#C9D5E7;margin:14px auto 34px;max-width:520px}
+.close .ctas{justify-content:center}
+footer{background:var(--night2);color:var(--mist2);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:22px;padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+footer a{text-decoration:none}footer a:hover{color:#fff}
 
-.rv{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rv.in{opacity:1;transform:none}
-.no-js .rv,.no-js .thud{opacity:1}
+.no-js .rv{opacity:1;transform:none}
 
-@media (max-width:900px){
-  .cover .wrap{grid-template-columns:1fr}
-  .hero-dev{width:210px;margin-bottom:-80px}
-  .journey{grid-template-columns:1fr;gap:0}
-  .phone{order:-1;top:62px;height:auto;max-height:none;padding:14px 0;background:var(--paper);z-index:5}
-  .phone .dev{width:150px;border-width:6px;border-radius:22px}
-  .phone .dots{position:static;margin-inline-start:18px;flex-direction:column}
-  .dots b.on{width:7px;height:20px}
-  .step{min-height:56vh;justify-content:flex-start;padding-top:24px}
-  .cards,.chain{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin-inline:-22px;padding:0 22px 8px;scrollbar-width:none}
-  .chain{border:0;background:none;border-radius:0}
-  .cards::-webkit-scrollbar,.chain::-webkit-scrollbar{display:none}
-  .card,.chain div{flex:0 0 78%;scroll-snap-align:start}
-  .chain div{background:var(--sheet);border:1px solid var(--rule)!important;border-radius:16px}
-  .film .wrap{grid-template-columns:1fr}.film video{max-width:300px;margin:0 auto}
-  .offer{grid-template-columns:1fr}
+@media (max-width:980px){
+  .hero .wrap{grid-template-columns:1fr;gap:40px;padding-top:48px}
+  .story{grid-template-columns:1fr}
+  .phone{display:none}
+  .swipe{display:block}
+  .steps{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-24px;padding:0 24px 8px;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .st{flex:0 0 min(76%,300px);min-height:0;opacity:1;scroll-snap-align:start;justify-content:flex-start}
+  .st figure{display:block;border-radius:26px;border:7px solid var(--night);overflow:hidden;background:#fff;aspect-ratio:540/1170;margin-bottom:16px}
+  .st figure img{width:100%;height:100%;object-fit:cover}
+  .st h3{font-size:21px;margin:4px 0 6px}.st p{font-size:15.5px}.st ul{display:none}
+  .off,.f1{grid-template-columns:1fr;gap:36px}
+  .f1 .vphone{max-width:320px;margin:0 auto;width:100%}
+  .inst{grid-template-columns:1fr 1fr 1fr}.qr{display:none}
+  .chain{grid-template-columns:1fr}
+  .chain:before{top:12px;bottom:34px;right:11px;left:auto;width:2px;height:auto}
+  .chain li{display:grid;grid-template-columns:24px 1fr;gap:2px 18px;text-align:right;padding:0 0 24px}
+  .chain li:before{margin:0;grid-row:span 2}
+  .spec>div{grid-template-columns:96px 1fr;gap:4px 16px}
+  .spec p{grid-column:2}
+  .offer{grid-template-columns:1fr;padding:30px}
 }
-@media (max-width:600px){
+@media (max-width:640px){
   body{font-size:16px}
-  .pg{padding:68px 0}.first{padding-top:130px}
-  .cover{padding-top:40px}
-  .paths{grid-template-columns:1fr 1fr;padding-bottom:56px}
-  .path{padding:14px}
-  .r{grid-template-columns:1fr 84px 76px;font-size:14px;gap:6px}
-  .ba-layer{padding:18px 16px 60px}
-  .install,.nums{grid-template-columns:1fr}
-  .nums{grid-template-columns:repeat(3,1fr)}.nums span{font-size:13.5px}
+  .wrap{padding:0 20px}
+  .top .wrap{gap:10px;height:60px}
+  .logo span{display:none}
+  .seg button{padding:0 12px;font-size:14px}
+  .top .dl-txt{display:none}.top .dl-ico{display:block}
+  .top .btn{width:44px;padding:0}
+  .hero .wrap{padding-top:40px;padding-bottom:64px}
+  .ctas .btn{flex:1 1 auto}
+  .idc{padding:18px}
+  .idc input{font-size:23px;letter-spacing:.22em;padding:12px}
+  .reg div{grid-template-columns:48px 1fr 92px;font-size:14px}
+  .sec{padding:76px 0}
+  .hd{grid-template-columns:1fr;gap:14px;margin-bottom:32px}
+  .no{width:64px}
+  .ba-l{padding:18px 14px 66px}
+  .row{grid-template-columns:1fr 78px 84px;gap:6px;font-size:14px}
+  .tag{padding:3px 4px}
+  .ba h3{font-size:12.5px}
+  .inst,.trust{grid-template-columns:1fr;gap:22px}
+  .facts b{font-size:16px}
+  .steps{margin-inline:-20px;padding:0 20px 8px}
+  .dlrow .btn,.offer .btn{width:100%}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}.rv,.thud{opacity:1;transform:none}.thud{transform:rotate(-9deg)}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{transition:none!important;animation:none!important}
+  .rv{opacity:1;transform:none}
+}
 </style>
 </head>
 <body class="no-js">
 <a class="skip" href="#main">انتقل إلى المحتوى</a>
-<header class="top"><div class="wrap">
-  <a class="logo" href="#top" aria-label="إيواء، أعلى الصفحة"><img src="img/icon.png" alt="" width="32" height="32">إيواء</a>
-  <a class="btn b-paper" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk">تحميل التطبيق</a>
-</div></header>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="إيواء، أعلى الصفحة"><img src="img/icon.png" alt="" width="34" height="34"><span>إيواء</span></a>
+    <div class="seg" role="group" aria-label="اختر ما يناسبك">
+      <i aria-hidden="true"></i>
+      <button type="button" data-p="camp" aria-pressed="true">مدير مخيم</button>
+      <button type="button" data-p="org" aria-pressed="false">مؤسسة</button>
+    </div>
+    <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk" aria-label="تحميل التطبيق">
+      <span class="dl-txt">تحميل التطبيق</span>
+      <svg class="dl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+    </a>
+  </div>
+</header>
 
 <main id="main">
-<section class="cover" id="top" aria-labelledby="h1">
+<section class="hero" id="top">
   <div class="wrap">
     <div>
-      <div class="kick"><span class="mono">EIWAA</span>نظام إدارة مراكز الإيواء</div>
-      <h1 id="h1">سجلّ المخيم كلّه<br><span>في جوالك.</span></h1>
-      <p class="lede">الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، وصُمّم من داخل مخيم في قطاع غزة.</p>
-      <div class="paths" role="tablist" aria-label="اختر مسارك">
-        <button class="path" role="tab" id="t-camp" aria-controls="camp" aria-selected="true"><b>أنا مدير مخيم</b><small>سجل، تحقق، توزيع</small></button>
-        <button class="path" role="tab" id="t-org" aria-controls="org" aria-selected="false"><b>أنا مؤسسة</b><small>كشوفات نظيفة لكل المخيمات</small></button>
+      <div data-for="camp">
+        <div class="kick"><span class="m">EIWAA</span>لمدراء المخيمات</div>
+        <h1>سجلّ المخيم كلّه <span class="lt">في جوالك.</span></h1>
+        <p class="lede">الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، وصُمّم من داخل مخيم في قطاع غزة.</p>
+        <div class="ctas">
+          <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>حمّل التطبيق مجانًا</a>
+          <a class="btn b-ghost" href="#film1"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>شاهد الفيلم</a>
+        </div>
+        <p class="fine">أندرويد 8 فما فوق · مجاني للمخيمات</p>
+      </div>
+      <div data-for="org" hidden>
+        <div class="kick"><span class="m">EIWAA</span>للمؤسسات ومنسّقي المشاريع</div>
+        <h1>كشوفات نظيفة <span class="lt">من كل المخيمات.</span></h1>
+        <p class="lede">كل أسرة مسجّلة مرة واحدة، وكل رقم له مصدر، وكل كشف يصلكم برقم مرجعي وبالصيغة التي تطلبونها.</p>
+        <div class="ctas">
+          <a class="btn b-light" data-wa="السلام عليكم، نود تجربة إيواء لمخيم واحد" href="#contact">اطلبوا تجربة لمخيم واحد</a>
+          <a class="btn b-ghost" href="#film2"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>شاهدوا الفيلم</a>
+        </div>
+        <p class="fine">تجربة 60 يومًا · البيانات تبقى ملككم</p>
       </div>
     </div>
-    <div class="hero-dev" aria-hidden="true">
-      <div class="dev"><img src="img/01-today.webp" alt="" width="540" height="1170"></div>
-      <div class="stamp thud">تم التحقق</div>
+
+    <div class="idc" role="region" aria-labelledby="idc-t">
+      <div class="idc-hd"><b id="idc-t">جرّب بنفسك: فحص رقم الهوية</b><span class="m" id="today"></span></div>
+      <label for="idin">اكتب رقم هوية من 9 أرقام</label>
+      <input id="idin" inputmode="numeric" autocomplete="off" maxlength="9" placeholder="•••••••••" aria-describedby="res">
+      <div class="res" id="res" aria-live="polite">يُفحص الرقم على جهازك فقط، ولا يُرسل لأي مكان.</div>
+      <div class="tries"><button type="button" data-try="dup">جرّب رقمًا مسجّلًا</button><button type="button" data-try="bad">جرّب رقمًا فيه خطأ</button></div>
+      <div class="reg" id="reg" aria-label="مثال من سجل الأسر"></div>
+      <div id="stampbox"></div>
     </div>
   </div>
 </section>
 
-<!-- ============ path: camp manager ============ -->
-<div class="track" id="camp" role="tabpanel" aria-labelledby="t-camp">
-<section class="pg first" aria-labelledby="h-ba">
+<!-- ============ camp manager ============ -->
+<div data-for="camp" id="camp">
+<section class="sec" aria-labelledby="h-ba">
   <div class="wrap">
-    <div class="label"><span class="mono">01</span>نفس الأسر، مرتين</div>
-    <h2 id="h-ba" class="rv">اسحب، وشاهد الكشف يترتّب.</h2>
-    <div class="ba rv" style="--x:50%">
-      <div class="ba-layer ba-before" aria-label="كشف تقليدي">
-        <h3><span>كشف_نهائي_٣ (معدّل).xlsx</span><span class="mono">v7?</span></h3>
-        <div class="r hl"><span>أحمد يوسف سالم</span><span class="mono">40011····</span><span>استلم</span></div>
-        <div class="r"><span><s>خالد إبراهيم</s> خالد نصر</span><span class="mono">40022····</span><span>—</span></div>
-        <div class="r hl"><span>احمد يوسف سالم</span><span class="mono">40011····</span><span>استلم</span></div>
-        <div class="r"><span>هدى رامي حسن</span><span class="q">؟؟</span><span>—</span></div>
-        <div class="r"><span>رنا محمود</span><span class="q">بدون هوية</span><span>؟</span></div>
+    <div class="hd"><span class="no m">01</span><div><h2 id="h-ba" class="rv">الكشف نفسه، قبل إيواء وبعده.</h2><p class="sub rv">اسحب الخط، وشاهد الأسماء المكررة والأرقام الناقصة تتحول إلى سجل واحد واضح.</p></div></div>
+    <div class="ba rv" id="ba">
+      <div class="ba-l ba-before" aria-hidden="true">
+        <h3><span>كشف_نهائي_٣ (معدّل).xlsx</span><span class="m">v7?</span></h3>
+        <div class="row hl"><span>أحمد يوسف سالم</span><span class="m">40011····</span><span>استلم</span></div>
+        <div class="row"><span><s>خالد إبراهيم</s> خالد نصر</span><span class="m">40022····</span><span>—</span></div>
+        <div class="row hl"><span>احمد يوسف سالم</span><span class="m">40011····</span><span>استلم</span></div>
+        <div class="row"><span>هدى رامي حسن</span><span class="q">؟؟</span><span>—</span></div>
+        <div class="row"><span>رنا محمود</span><span class="q">بدون هوية</span><span>؟</span></div>
         <div class="stamp">مكرّر</div>
       </div>
-      <div class="ba-layer ba-after" aria-label="نفس الكشف في إيواء">
-        <h3><span>سجل الأسر · إيواء</span><span class="mono">2026/031</span></h3>
-        <div class="r"><span>أحمد يوسف سالم</span><span class="mono">F-001</span><span class="tag t-ok">استلم</span></div>
-        <div class="r"><span>خالد إبراهيم نصر</span><span class="mono">F-002</span><span class="tag t-st">لم يستلم</span></div>
-        <div class="r"><span>هدى رامي حسن</span><span class="mono">F-005</span><span class="tag t-am">ناقص الهوية</span></div>
-        <div class="r"><span>رنا محمود عيسى</span><span class="mono">F-009</span><span class="tag t-am">بحاجة زيارة</span></div>
-        <div class="r"><span>منى إبراهيم شعث</span><span class="mono">F-007</span><span class="tag t-ok">مكتملة</span></div>
+      <div class="ba-l ba-after" aria-hidden="true">
+        <h3><span>سجل الأسر · إيواء</span><span class="m">2026/031</span></h3>
+        <div class="row"><span>أحمد يوسف سالم</span><span class="m">F-001</span><span class="tag t-ok">استلم</span></div>
+        <div class="row"><span>خالد إبراهيم نصر</span><span class="m">F-002</span><span class="tag t-st">لم يستلم</span></div>
+        <div class="row"><span>هدى رامي حسن</span><span class="m">F-005</span><span class="tag t-am">ناقص الهوية</span></div>
+        <div class="row"><span>رنا محمود عيسى</span><span class="m">F-009</span><span class="tag t-am">بحاجة زيارة</span></div>
+        <div class="row" style="border:0"><span>منى إبراهيم شعث</span><span class="m">F-007</span><span class="tag t-ok">مكتملة</span></div>
         <div class="stamp">لا تكرار</div>
       </div>
-      <div class="ba-handle"><i>‹ ›</i></div>
       <input type="range" min="0" max="100" value="50" aria-label="قارن بين الكشف التقليدي وكشف إيواء">
+      <div class="bar"><div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div></div>
     </div>
-    <p class="hint">على اليمين كشف كما يصل اليوم. على اليسار نفس الأسر في إيواء.</p>
+    <div class="cap2"><span>اليوم: كشف إكسل بنسخ كثيرة</span><span>في إيواء: سجل واحد</span></div>
   </div>
 </section>
 
-<section class="pg" style="background:var(--sheet);border-block:1px solid var(--rule);padding-bottom:40px" aria-labelledby="h-j">
+<section class="sec alt" aria-labelledby="h-st" style="padding-bottom:56px">
   <div class="wrap">
-    <div class="label"><span class="mono">02</span>رحلة أسرة واحدة</div>
-    <h2 id="h-j">من الخيمة إلى كشف المؤسسة.</h2>
-    <div class="journey">
-      <div>
-        <article class="step" data-i="0"><span class="code mono">A · F-047</span><h3>تُسجَّل الأسرة مرة واحدة</h3><p>برقم هوية يُفحص فورًا. وإن كانت مسجّلة من قبل، يظهر التنبيه قبل الحفظ. ويمكنك استيراد كشف الإكسل الحالي كما هو.</p></article>
-        <article class="step" data-i="1"><span class="code mono">B · OFFLINE</span><h3>يكمّل الفريق الناقص، خيمة بخيمة</h3><p>كل شيء يُحفظ على الجوال، ويتزامن وحده عند عودة الإنترنت. والمدير يعتمد التغييرات المهمة.</p></article>
-        <article class="step" data-i="2"><span class="code mono">C · QR</span><h3>توزيع عادل بالبطاقة</h3><p>تُمسح بطاقة الأسرة عند الاستلام، وينبّهك التطبيق إن حاول أحد الاستلام مرتين.</p></article>
-        <article class="step" data-i="3"><span class="code mono">D · 2026/031</span><h3>كشف المؤسسة بصيغتها</h3><p>إكسل أو PDF برقم مرجعي، مع إخفاء أرقام الهوية والهواتف عند الحاجة.</p></article>
-        <article class="step" data-i="4"><span class="code mono">E · ALERTS</span><h3>المخيم ينبّهك قبل أن تُسأل</h3><p>من لم يستلم، وعدالة التوزيع، والبيانات المتناقضة، مرتبة حسب الأولوية.</p></article>
+    <div class="hd"><span class="no m">02</span><div><h2 id="h-st">رحلة أسرة واحدة، من الخيمة إلى كشف المؤسسة.</h2><p class="sub swipe">اسحب لترى الخطوات.</p></div></div>
+    <div class="story">
+      <div class="steps">
+        <article class="st" data-i="0"><figure><img src="img/03-family-profile.webp" alt="ملف أسرة في التطبيق" width="540" height="1170" loading="lazy"></figure><span class="m">A · F-047</span><h3>تُسجَّل الأسرة مرة واحدة</h3><p>برقم هوية يُفحص فورًا. وإن كانت مسجّلة من قبل، يظهر التنبيه قبل الحفظ.</p><ul><li>استيراد كشف الإكسل الحالي كما هو</li><li>قراءة رقم الهوية بالكاميرا</li><li>إعاقة، حمل، أمراض مزمنة، أيتام</li></ul></article>
+        <article class="st" data-i="1"><figure><img src="img/04-field-verification.webp" alt="شاشة التحقق الميداني" width="540" height="1170" loading="lazy"></figure><span class="m">B · OFFLINE</span><h3>يكمّل الفريق الناقص، خيمة بخيمة</h3><p>كل شيء يُحفظ على الجوال، ويُرسل وحده عند عودة الإنترنت.</p><ul><li>نسبة اكتمال لكل أسرة</li><li>توزيع المهام على المعاونين</li><li>اعتماد المدير للتغييرات المهمة</li></ul></article>
+        <article class="st" data-i="2"><figure><img src="img/09-distributions.webp" alt="شاشة التوزيع" width="540" height="1170" loading="lazy"></figure><span class="m">C · QR</span><h3>توزيع عادل بالبطاقة</h3><p>تُمسح بطاقة الأسرة عند الاستلام، فيعرف الجميع من استلم ومن لم يستلم.</p><ul><li>تنبيه عند الاستلام المكرر</li><li>كشف توقيع جاهز للطباعة</li><li>رسالة للأسر بموعد التوزيع</li></ul></article>
+        <article class="st" data-i="3"><figure><img src="img/05-report-builder.webp" alt="منشئ الكشوفات" width="540" height="1170" loading="lazy"></figure><span class="m">D · 2026/031</span><h3>كشف المؤسسة بصيغتها</h3><p>إكسل أو PDF برقم مرجعي، ويُسجَّل ما أُرسل لكل جهة.</p><ul><li>إخفاء أرقام الهوية والهواتف عند الحاجة</li><li>مطابقة كشف المستفيدين الراجع</li></ul></article>
+        <article class="st" data-i="4"><figure><img src="img/08-camp-observatory-dark.webp" alt="مرصد المخيم" width="540" height="1170" loading="lazy"></figure><span class="m">E · ALERTS</span><h3>المخيم ينبّهك قبل أن تُسأل</h3><p>من لم يستلم، وعدالة التوزيع، والبيانات المتناقضة، مرتبة حسب الأولوية.</p></article>
       </div>
       <div class="phone" aria-hidden="true">
         <div class="dev">
@@ -280,157 +395,223 @@ footer{background:var(--night2);color:#7E93B4;font-size:14px;padding:22px 0;text
           <img src="img/05-report-builder.webp" alt="" width="540" height="1170" loading="lazy">
           <img src="img/08-camp-observatory-dark.webp" alt="" width="540" height="1170" loading="lazy">
         </div>
-        <div class="dots"><b class="on"></b><b></b><b></b><b></b><b></b></div>
+        <div class="prog"><b class="on"></b><b></b><b></b><b></b><b></b></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="pg film" aria-labelledby="h-film">
-  <div class="wrap">
-    <div>
-      <div class="label"><span class="mono">03</span>في دقيقة</div>
-      <h2 id="h-film">يوم مدير المخيم، قبل إيواء وبعده.</h2>
-      <p class="intro">من «بدنا الكشف قبل الظهر» والأسماء المكررة، إلى كشف جاهز خلال ثوانٍ.</p>
+<section class="sec" aria-labelledby="h-off">
+  <div class="wrap off">
+    <div class="hd one" style="margin-bottom:0"><span class="no m">03</span><div>
+      <h2 id="h-off" class="rv">الإنترنت ينقطع. العمل لا يتوقف.</h2>
+      <p class="sub rv">سجّل أسرًا والإنترنت مقطوع، ثم شغّله: كل ما حُفظ على الجوال يُرسل وحده.</p></div></div>
+    <div class="panel rv">
+      <div class="ph">
+        <button type="button" class="sw" role="switch" aria-checked="false" id="sw"><span class="tr" aria-hidden="true"></span>الإنترنت</button>
+        <span class="net off" id="net">مقطوع</span>
+      </div>
+      <ul class="ol" id="ol" aria-live="polite"><li class="empty">لم تُسجَّل أسر بعد. اضغط «سجّل أسرة».</li></ul>
+      <div class="pf"><small>بانتظار الإرسال: <b class="m" id="pend">0</b></small><button type="button" class="btn b-tarp" id="add">سجّل أسرة</button></div>
     </div>
-    <video src="film1.mp4" poster="img/poster.jpg" controls playsinline preload="none" aria-label="فيلم تعريفي بإيواء"></video>
   </div>
 </section>
 
-<section class="pg" id="install" aria-labelledby="h-in">
-  <div class="wrap">
-    <div class="label"><span class="mono">04</span>البدء</div>
-    <h2 id="h-in" class="rv">ثلاث خطوات، وتبدأ العمل.</h2>
-    <div class="install">
-      <div class="rv"><span class="n">١</span><h3>حمّل التطبيق</h3><p>افتح الملف واسمح مرة واحدة «بتثبيت تطبيقات غير معروفة».</p></div>
-      <div class="rv"><span class="n">٢</span><h3>اطلب التفعيل</h3><p>من شاشة الدخول: «مدير مخيم جديد؟ اطلب تفعيل».</p></div>
-      <div class="rv"><span class="n">٣</span><h3>استورد كشفك</h3><p>أدخل ملف الإكسل الحالي، وأضف المعاونين بأدوارهم.</p></div>
+<section class="sec film" id="film1" aria-labelledby="h-f1">
+  <div class="wrap f1">
+    <div>
+      <div class="hd one" style="margin-bottom:0"><span class="no m">04</span><div>
+        <h2 id="h-f1">يوم مدير المخيم، قبل إيواء وبعده.</h2>
+        <p class="sub">من «بدنا الكشف قبل الظهر» والأسماء المكررة، إلى كشف جاهز يُرسل خلال ثوانٍ.</p></div></div>
+      <div class="facts"><div><b>بدون إنترنت</b>ويُرسل وحده</div><div><b>بلا تكرار</b>فحص رقم الهوية</div><div><b>مجاني</b>للمخيمات</div></div>
     </div>
-    <div class="row">
-      <a class="btn b-tarp" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>حمّل إيواء مجانًا</a>
-      <small>أندرويد 8 فما فوق · تحميل مباشر من GitHub</small>
+    <div class="vphone"><video src="film1.mp4" poster="img/poster.jpg" controls playsinline preload="none" aria-label="فيلم إيواء لمدراء المخيمات"></video></div>
+  </div>
+</section>
+
+<section class="sec" id="install" aria-labelledby="h-in">
+  <div class="wrap">
+    <div class="hd"><span class="no m">05</span><div><h2 id="h-in" class="rv">ثلاث خطوات، وتبدأ العمل.</h2></div></div>
+    <div class="inst">
+      <div class="s rv"><span class="n">١</span><h3>حمّل التطبيق</h3><p>افتح الملف على جوالك، واسمح مرة واحدة «بتثبيت تطبيقات غير معروفة».</p></div>
+      <div class="s rv"><span class="n">٢</span><h3>اطلب التفعيل</h3><p>من شاشة الدخول اختر «مدير مخيم جديد؟ اطلب تفعيل»، فنفعّل مخيمك ونتواصل معك.</p></div>
+      <div class="s rv"><span class="n">٣</span><h3>استورد كشفك</h3><p>أدخل ملف الإكسل الحالي كما هو، وأضف المعاونين بأدوارهم.</p></div>
+      <div class="qr"><img src="img/qr.svg" alt="رمز لتحميل التطبيق" width="150" height="150"><small>امسح الرمز بجوالك للتحميل</small></div>
+    </div>
+    <div class="dlrow">
+      <a class="btn b-tarp" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>حمّل إيواء</a>
+      <small>تحميل مباشر · أندرويد 8 فما فوق</small>
     </div>
   </div>
 </section>
 </div>
 
-<!-- ============ path: organisation ============ -->
-<div class="track" id="org" role="tabpanel" aria-labelledby="t-org" hidden>
-<section class="pg first" aria-labelledby="h-org">
+<!-- ============ organisations ============ -->
+<div data-for="org" id="org" hidden>
+<section class="sec film" id="film2" aria-labelledby="h-f2">
   <div class="wrap">
-    <div class="label"><span class="mono">01</span>للمؤسسات ومنسّقي المشاريع</div>
-    <h2 id="h-org">منظومة واحدة، لكل المخيمات.</h2>
-    <p class="intro">كل رقم له مصدر، وكل تعديل مسجّل، وكل كشف معروف لمن أُرسل ومتى.</p>
-    <div class="chain">
-      <div><span class="mono">01</span><h3>الأسرة</h3><p>تُسجَّل مرة واحدة برقم هوية مفحوص</p></div>
-      <div><span class="mono">02</span><h3>المعاون</h3><p>يتحقق ويكمل البيانات في الميدان</p></div>
-      <div><span class="mono">03</span><h3>مدير المخيم</h3><p>يراجع ويعتمد التغييرات المهمة</p></div>
-      <div><span class="mono">04</span><h3>منسّق المشروع</h3><p>يستلم كشفًا نظيفًا برقم مرجعي</p></div>
-      <div><span class="mono">05</span><h3>المؤسسة والمانح</h3><p>أرقام حسب العمر والجنس</p></div>
-    </div>
+    <div class="hd"><span class="no m">01</span><div><h2 id="h-f2">منظومة واحدة، لكل المخيمات.</h2><p class="sub">من عشرين شكلًا للكشوفات، إلى نظام واحد ترونه في شاشة واحدة.</p></div></div>
+    <div class="vwide"><video src="film2.mp4" poster="img/poster2.jpg" controls playsinline preload="none" aria-label="فيلم إيواء للمؤسسات"></video></div>
   </div>
 </section>
 
-<section class="pg" style="background:var(--sheet);border-block:1px solid var(--rule)" aria-labelledby="h-f">
+<section class="sec" aria-labelledby="h-ch">
   <div class="wrap">
-    <div class="label"><span class="mono">02</span>ما تحصلون عليه</div>
-    <h2 id="h-f" class="rv">بيانات يمكن الوثوق بها.</h2>
-    <div class="cards">
-      <div class="card"><span class="mono">ID</span><h3>منع التكرار</h3><p>فحص رقم الهوية عند كل تسجيل، وتنبيه عند تشابه الأسماء.</p></div>
-      <div class="card"><span class="mono">MATCH</span><h3>مطابقة الكشف الراجع</h3><p>كشف المقبولين بأي شكل يُطابق بأرقام الهوية خلال ثوانٍ.</p></div>
-      <div class="card"><span class="mono">OUT</span><h3>سجل الصادر</h3><p>رقم وتاريخ وعدد أسطر لكل كشف أُرسل لأي جهة.</p></div>
-      <div class="card"><span class="mono">QA</span><h3>مؤشر جودة البيانات</h3><p>درجة لكل مخيم: أين تثقون وأين تراجعون.</p></div>
-      <div class="card"><span class="mono">ROLE</span><h3>أدوار وصلاحيات</h3><p>مدير ومعاون ومشاهد، وسجل تعديلات لا يُحذف.</p></div>
-      <div class="card"><span class="mono">MULTI</span><h3>لوحة لعدة مخيمات<span class="soon">قريبًا</span></h3><p>مخيمات المشروع في شاشة واحدة، مع كشف التكرار بينها.</p></div>
-    </div>
-    <div class="nums">
-      <div><b class="mono" data-to="60">0</b><span>يوم تجربة على مخيم واحد</span></div>
-      <div><b class="mono" data-to="100">0</b><span>درجة جودة لكل مخيم</span></div>
-      <div><b class="mono" data-to="0" data-from="9">9</b><span>تكرار في الكشف المُرسل</span></div>
-    </div>
+    <div class="hd"><span class="no m">02</span><div><h2 id="h-ch" class="rv">كل رقم له مصدر.</h2><p class="sub rv">من الأسرة في خيمتها إلى الرقم في تقرير المانح، بخطوات معروفة.</p></div></div>
+    <ol class="chain rv">
+      <li><h3>الأسرة</h3><p>تُسجَّل مرة واحدة برقم هوية مفحوص</p></li>
+      <li><h3>المعاون</h3><p>يتحقق ويكمل البيانات في الميدان</p></li>
+      <li><h3>مدير المخيم</h3><p>يراجع ويعتمد التغييرات المهمة</p></li>
+      <li><h3>منسّق المشروع</h3><p>يستلم كشفًا نظيفًا برقم مرجعي</p></li>
+      <li><h3>المؤسسة والمانح</h3><p>أرقام حسب العمر والجنس</p></li>
+    </ol>
   </div>
 </section>
 
-<section class="pg" aria-labelledby="h-tr">
+<section class="sec alt" aria-labelledby="h-sp">
   <div class="wrap">
-    <div class="label"><span class="mono">03</span>الأمان والخصوصية</div>
-    <h2 id="h-tr" class="rv">بيانات الأسر أمانة.</h2>
-    <div class="install">
+    <div class="hd"><span class="no m">03</span><div><h2 id="h-sp" class="rv">ما تحصلون عليه.</h2></div></div>
+    <div class="spec">
+      <div class="rv"><span class="m">ID-CHECK</span><h3>منع التكرار</h3><p>فحص رقم الهوية عند كل تسجيل، وتنبيه عند تشابه الأسماء.</p></div>
+      <div class="rv"><span class="m">MATCH</span><h3>مطابقة الكشف الراجع</h3><p>كشف المقبولين بأي شكل يُطابق بأرقام الهوية خلال ثوانٍ.</p></div>
+      <div class="rv"><span class="m">2026/031</span><h3>سجل الصادر</h3><p>رقم وتاريخ وعدد أسطر لكل كشف أُرسل لأي جهة.</p></div>
+      <div class="rv"><span class="m">SADD</span><h3>أرقام حسب العمر والجنس</h3><p>جاهزة لتقارير المانحين مع كل كشف.</p></div>
+      <div class="rv"><span class="m">QA</span><h3>مؤشر جودة البيانات</h3><p>درجة لكل مخيم: أين تثقون وأين تراجعون.</p></div>
+      <div class="rv"><span class="m">ROLES</span><h3>أدوار وصلاحيات</h3><p>مدير ومعاون ومشاهد، وسجل تعديلات لا يُحذف.</p></div>
+      <div class="rv"><span class="m">MULTI</span><h3>لوحة لعدة مخيمات<span class="soon">قريبًا</span></h3><p>مخيمات المشروع في شاشة واحدة، مع كشف التكرار بينها.</p></div>
+    </div>
+    <div class="trust">
       <div class="rv"><h3>أقل بيانات ممكنة</h3><p>لا صور للهويات، ولا يُجمع إلا ما يحتاجه العمل.</p></div>
-      <div class="rv"><h3>كل مخيم معزول</h3><p>لا يرى أي مخيم بيانات غيره، والقواعد على الخادم.</p></div>
-      <div class="rv"><h3>البيانات ملككم</h3><p>لا يُرسل كشف إلا بقرار المدير، وتستلمون كل شيء بملف إكسل متى شئتم.</p></div>
+      <div class="rv"><h3>كل مخيم معزول</h3><p>لا يرى أي مخيم بيانات غيره، والقواعد مطبّقة على الخادم.</p></div>
+      <div class="rv"><h3>القرار للمخيم</h3><p>لا يُرسل كشف لأي جهة إلا بقرار مدير المخيم.</p></div>
     </div>
     <div class="offer rv">
-      <div><h3>ابدؤوا بمخيم واحد لمدة 60 يومًا</h3><p>وإن لم يناسبكم، تستلمون كل البيانات في ملف إكسل.</p></div>
-      <a class="btn b-wa" data-wa="نود تجربة إيواء لمخيم واحد" href="#">اطلبوا تجربة عبر واتساب</a>
+      <div><h3>ابدؤوا بمخيم واحد لمدة 60 يومًا.</h3><p>وإن لم يناسبكم، تستلمون كل البيانات في ملف إكسل. البيانات تبقى ملككم.</p></div>
+      <a class="btn b-wa" data-wa="السلام عليكم، نود تجربة إيواء لمخيم واحد" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>اطلبوا تجربة عبر واتساب</a>
     </div>
   </div>
 </section>
 </div>
 
-<section class="pg" id="faq" style="padding-top:20px" aria-labelledby="h-faq">
+<section class="sec" id="faq" aria-labelledby="h-faq">
   <div class="wrap">
-    <h2 id="h-faq">أسئلة شائعة</h2>
+    <div class="hd"><span class="no m">FAQ</span><div><h2 id="h-faq">أسئلة شائعة</h2></div></div>
     <div class="faq">
       <details><summary>هل التطبيق مجاني؟</summary><p>نعم، مجاني لمدراء المخيمات. وللمؤسسات تجربة 60 يومًا على مخيم واحد.</p></details>
-      <details><summary>هل يعمل بدون إنترنت؟</summary><p>نعم. أول دخول فقط يحتاج إنترنت، وبعدها يعمل كل شيء ويتزامن وحده عند عودة الاتصال.</p></details>
-      <details><summary>عندي كشف إكسل جاهز، هل أبدأ من الصفر؟</summary><p>لا. استورد ملفك كما هو، ويتعرّف التطبيق على الأعمدة ويعرض الأخطاء.</p></details>
-      <details><summary>هل يعمل على الآيفون؟</summary><p>حاليًا على أندرويد 8 فما فوق، ويعمل جيدًا على الجوالات القديمة.</p></details>
-      <details><summary>من يرى بيانات مخيمي؟</summary><p>أنت وفريقك فقط حسب أدوارهم. ولا يُرسل أي كشف لمؤسسة إلا بقرار مدير المخيم.</p></details>
+      <details><summary>هل يعمل بدون إنترنت؟</summary><p>نعم. أول دخول فقط يحتاج إنترنت، وبعدها يعمل كل شيء على الجوال ويُرسل وحده عند عودة الاتصال.</p></details>
+      <details><summary>عندي كشف إكسل جاهز، هل أبدأ من الصفر؟</summary><p>لا. استورد ملفك كما هو، ويتعرّف التطبيق على الأعمدة ويعرض الأخطاء في البيانات.</p></details>
+      <details><summary>هل يعمل على الآيفون؟</summary><p>حاليًا على أجهزة أندرويد 8 فما فوق، ويعمل جيدًا على الجوالات القديمة.</p></details>
+      <details><summary>من يرى بيانات المخيم؟</summary><p>مدير المخيم وفريقه فقط حسب أدوارهم. ولا يُرسل أي كشف لمؤسسة إلا بقرار مدير المخيم.</p></details>
     </div>
   </div>
 </section>
 
-<section class="close" aria-labelledby="h-close">
+<section class="close" id="contact" aria-labelledby="h-close">
   <div class="wrap">
     <h2 id="h-close">حتى لا تُنسى أي أسرة.</h2>
-    <p class="intro">إيواء… منظومة واحدة، لكل المخيمات.</p>
-    <div class="row">
-      <a class="btn b-paper" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk">حمّل التطبيق مجانًا</a>
-      <a class="btn b-wa" data-wa="السلام عليكم، أريد الاستفسار عن إيواء" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>راسل «إيواء» على واتساب</a>
+    <p>إيواء… منظومة واحدة، لكل المخيمات.</p>
+    <div class="ctas">
+      <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk">حمّل التطبيق مجانًا</a>
+      <a class="btn b-wa" data-wa="السلام عليكم، أريد الاستفسار عن إيواء" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>راسل «إيواء» على واتساب</a>
     </div>
   </div>
 </section>
 </main>
 
-<footer>© إيواء 2026</footer>
+<footer><div class="wrap"><span>© 2026 إيواء</span><a href="https://github.com/abood2596/eiwaa-download/releases/latest">صفحة الإصدارات</a></div></footer>
 
 <script>
 document.body.classList.remove('no-js');
 (function(){
-  var WA='972567501850';
-  document.querySelectorAll('[data-wa]').forEach(function(a){a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(a.dataset.wa);a.rel='noopener'});
+  var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function $(s,r){return (r||document).querySelector(s)}
+  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+
+  // WhatsApp Business «إيواء» (the number is never shown as text)
+  var WA=['972','56','750','1850'].join('');
+  $$('[data-wa]').forEach(function(a){a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(a.dataset.wa);a.target='_blank';a.rel='noopener'});
+
+  var d=new Date();$('#today').textContent=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
 
   // paths
-  var tabs=document.querySelectorAll('.path');
-  function show(id,scroll){tabs.forEach(function(t){var on=t.getAttribute('aria-controls')===id;t.setAttribute('aria-selected',on);document.getElementById(t.getAttribute('aria-controls')).hidden=!on});
-    if(scroll)document.getElementById(id).scrollIntoView({behavior:'smooth'});observe();history.replaceState(null,'','#'+id)}
-  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.getAttribute('aria-controls'),true)})});
-  if(location.hash==='#org')show('org',false);
+  var seg=$('.seg'),pill=$('.seg i'),btns=$$('.seg button');
+  function movePill(){var b=$('.seg [aria-pressed=true]');pill.style.width=b.offsetWidth+'px';pill.style.right=(seg.clientWidth-b.offsetLeft-b.offsetWidth)+'px'}
+  function setPath(p,push){
+    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.p===p))});
+    $$('[data-for]').forEach(function(el){el.hidden=el.dataset.for!==p});
+    movePill();observe();
+    if(push)history.replaceState(null,'',p==='org'?'#org':location.pathname);
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){setPath(b.dataset.p,true);window.scrollTo({top:0,behavior:RM?'auto':'smooth'})})});
+  addEventListener('resize',movePill);
+  if(document.fonts)document.fonts.ready.then(movePill);
 
-  // reveal + stamp
-  var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');if(e.target.dataset.to)count(e.target);io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px'}):null;
-  function observe(){document.querySelectorAll('.rv:not(.in),.thud:not(.in),.ba .stamp:not(.in),[data-to]').forEach(function(e){io?io.observe(e):e.classList.add('in')})}
-  document.querySelectorAll('.ba .stamp').forEach(function(s){s.classList.add('thud')});
-  observe();
+  // reveal
+  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'}):null;
+  function observe(){$$('.rv:not(.in)').forEach(function(e){io?io.observe(e):e.classList.add('in')})}
+  if(/^#(org|film2)$/.test(location.hash))setPath('org',false);else{movePill();observe()}
 
-  // counters
-  function count(el){if(el.dataset.done)return;el.dataset.done=1;var a=+(el.dataset.from||0),b=+el.dataset.to,t0=null,d=1100;
-    if(matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=b;return}
-    requestAnimationFrame(function f(t){t0=t0||t;var p=Math.min((t-t0)/d,1);p=1-Math.pow(1-p,3);el.textContent=Math.round(a+(b-a)*p);if(p<1)requestAnimationFrame(f)})}
+  // ID check: Palestinian ID check digit, runs only in the browser
+  function valid(s){if(!/^\d{9}$/.test(s))return false;var t=0;for(var i=0;i<9;i++){var n=+s[i]*(i%2?2:1);t+=n>9?n-9:n}return t%10===0}
+  function mk(b){for(var c=0;c<10;c++)if(valid(b+c))return b+c}
+  var fam=[['F-041','أسرة يوسف ماهر',mk('40136827')],['F-042','أسرة هدى رامي',mk('40258314')],['F-043','أسرة خالد إبراهيم',mk('80371569')],['F-044','أسرة منى شعث',mk('90412736')]];
+  var reg=$('#reg');
+  reg.innerHTML=fam.map(function(f,i){return '<div data-i="'+i+'"><span class="m">'+f[0]+'</span><span>'+f[1]+'</span><span class="m">'+f[2].slice(0,3)+'····'+f[2].slice(7)+'</span></div>'}).join('');
+  var inp=$('#idin'),res=$('#res'),sb=$('#stampbox'),last='';
+  function stamp(cls,txt){if(last===txt)return;last=txt;sb.innerHTML=txt?'<div class="stamp '+cls+(RM?'':' thud')+'">'+txt+'</div>':''}
+  function check(){
+    var v=inp.value.replace(/[٠-٩]/g,function(c){return String('٠١٢٣٤٥٦٧٨٩'.indexOf(c))}).replace(/\D/g,'').slice(0,9);
+    if(inp.value!==v)inp.value=v;
+    $$('div',reg).forEach(function(r){r.classList.remove('hit')});
+    res.className='res';
+    if(!v){res.textContent='يُفحص الرقم على جهازك فقط، ولا يُرسل لأي مكان.';stamp('','');return}
+    if(v.length<9){res.textContent='كتبت '+v.length+' من 9 أرقام';stamp('','');return}
+    var hit=-1;fam.forEach(function(f,i){if(f[2]===v)hit=i});
+    if(hit>=0){$('[data-i="'+hit+'"]',reg).classList.add('hit');res.className='res dup';res.innerHTML='<span><b>مسجّل من قبل</b>في '+fam[hit][1]+' ('+fam[hit][0]+'). لن تُسجَّل الأسرة مرتين.</span>';stamp('s-dup','مكرّر');return}
+    if(!valid(v)){res.className='res bad';res.innerHTML='<span><b>الرقم غير صحيح.</b>راجعه مع صاحب الهوية قبل الحفظ.</span>';stamp('s-bad','راجع الرقم');return}
+    res.className='res ok';res.innerHTML='<span><b>رقم صحيح</b>وغير مسجّل. يمكن الحفظ.</span>';stamp('s-ok','تم التحقق');
+  }
+  inp.addEventListener('input',check);
+  $$('[data-try]').forEach(function(b){b.addEventListener('click',function(){
+    var s=fam[2][2],v=b.dataset.try==='dup'?fam[1][2]:s.slice(0,8)+((+s[8]+3)%10);
+    var i=0;(function t(){inp.value=v.slice(0,++i);check();if(i<9)setTimeout(t,RM?0:45)})();
+  })});
 
-  // before/after
-  var ba=document.querySelector('.ba'),rg=ba.querySelector('input');
+  // before / after
+  var ba=$('#ba'),rg=$('input',ba);
   function setX(){ba.style.setProperty('--x',rg.value+'%')}
   rg.addEventListener('input',setX);
-  // gentle one-time nudge so people see it moves
-  if(io&&!matchMedia('(prefers-reduced-motion:reduce)').matches){var n=new IntersectionObserver(function(es){if(es[0].isIntersecting){n.disconnect();var v=[50,38,62,50],i=0;(function s(){rg.value=v[i++];setX();if(i<v.length)setTimeout(s,380)})()}},{threshold:.6});n.observe(ba)}
+  if(io&&!RM){var nb=new IntersectionObserver(function(es){if(es[0].isIntersecting){nb.disconnect();var seq=[44,36,30,38,50,62,70,64,56,50],k=0;setTimeout(function s(){rg.value=seq[k++];setX();if(k<seq.length)setTimeout(s,70)},400)}},{threshold:.7});nb.observe(ba)}
 
   // sticky phone
-  var steps=document.querySelectorAll('.step'),imgs=document.querySelectorAll('.phone img'),dots=document.querySelectorAll('.dots b');
-  function act(i){steps.forEach(function(s,k){s.classList.toggle('on',k===i)});imgs.forEach(function(m,k){m.classList.toggle('on',k===i)});dots.forEach(function(d,k){d.classList.toggle('on',k===i)})}
-  if(io){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)act(+e.target.dataset.i)})},{rootMargin:'-45% 0px -50% 0px'});steps.forEach(function(s){so.observe(s)})}else act(0);
+  var steps=$$('.st'),imgs=$$('.dev img'),dots=$$('.prog b');
+  function act(i){steps.forEach(function(s,k){s.classList.toggle('on',k===i)});imgs.forEach(function(m,k){m.classList.toggle('on',k===i)});dots.forEach(function(x,k){x.classList.toggle('on',k===i)})}
   act(0);
+  if(io){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)act(+e.target.dataset.i)})},{rootMargin:'-45% 0px -50% 0px'});steps.forEach(function(s){so.observe(s)})}
+
+  // offline demo
+  var sw=$('#sw'),net=$('#net'),ol=$('#ol'),pend=$('#pend'),names=['أسرة سامي عمر','أسرة رنا محمود','أسرة عمر نبيل','أسرة نادر حسن','أسرة ليلى سالم','أسرة إياد خليل'],no=46,q=[];
+  function tagOf(on){return on?'<span class="tag t-ok">أُرسلت</span>':'<span class="tag t-am">على الجوال</span>'}
+  function upd(){pend.textContent=q.length}
+  $('#add').addEventListener('click',function(){
+    var e=$('.empty',ol);if(e)e.remove();
+    var on=sw.getAttribute('aria-checked')==='true',li=document.createElement('li');no++;
+    li.innerHTML='<span class="m">F-0'+no+'</span><span>'+names[(no-47)%names.length]+'</span>'+tagOf(on);
+    ol.insertBefore(li,ol.firstChild);if(!on)q.push(li);
+    while(ol.children.length>5){var x=ol.lastChild;q=q.filter(function(y){return y!==x});ol.removeChild(x)}
+    upd();
+  });
+  sw.addEventListener('click',function(){
+    var on=sw.getAttribute('aria-checked')!=='true';sw.setAttribute('aria-checked',String(on));
+    net.className='net '+(on?'on':'off');net.textContent=on?'متصل':'مقطوع';
+    if(on)(function flush(){if(sw.getAttribute('aria-checked')!=='true')return;var li=q.shift();if(!li){upd();return}li.lastChild.outerHTML=tagOf(true);upd();setTimeout(flush,RM?0:380)})();
+  });
+
+  // one video at a time
+  $$('video').forEach(function(v){v.addEventListener('play',function(){$$('video').forEach(function(o){if(o!==v)o.pause()})})});
+
+  // the page itself opens without internet after the first visit
+  if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
 })();
 </script>
 </body>

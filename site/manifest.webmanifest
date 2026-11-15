@@ -1,0 +1,29 @@
+{
+  "id": "/",
+  "name": "إيواء · نظام إدارة مراكز الإيواء",
+  "short_name": "إيواء",
+  "description": "سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F2747",
+  "theme_color": "#0F2747",
+  "categories": ["productivity", "utilities", "business"],
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "/img/01-today.webp", "sizes": "540x1170", "type": "image/webp", "form_factor": "narrow", "label": "شاشة اليوم" },
+    { "src": "/img/04-field-verification.webp", "sizes": "540x1170", "type": "image/webp", "form_factor": "narrow", "label": "التحقق الميداني" },
+    { "src": "/img/05-report-builder.webp", "sizes": "540x1170", "type": "image/webp", "form_factor": "narrow", "label": "كشوفات المؤسسات" }
+  ],
+  "shortcuts": [
+    { "name": "تحميل التطبيق", "short_name": "تحميل", "url": "/#install", "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }] },
+    { "name": "للمؤسسات", "short_name": "المؤسسات", "url": "/#org", "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
