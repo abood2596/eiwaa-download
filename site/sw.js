@@ -1,5 +1,5 @@
 // إيواء: يحفظ الصفحتين للفتح بدون إنترنت. الصفحات من الشبكة أولًا، والملفات الثابتة من الحفظ.
-const V = 'eiwaa-v4';
+const V = 'eiwaa-v5';
 const CORE = ['/', '/org/', '/a/e.css', '/a/e.js', '/manifest.webmanifest', '/img/icon.png', '/img/icon-192.png', '/img/01-today.webp',
   '/fonts/s-regular.woff2', '/fonts/s-bold.woff2', '/fonts/s-light.woff2', '/fonts/plex_mono.woff2'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(CORE)).then(() => self.skipWaiting())); });

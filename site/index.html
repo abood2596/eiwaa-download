@@ -26,6 +26,7 @@
 </head>
 <body class="no-js" data-path="camp">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="ink" x="-5%" y="-10%" width="110%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="3" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.4" xChannelSelector="R" yChannelSelector="G" result="d"/><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="1" seed="9" result="s"/><feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -4 2.9" result="m"/><feComposite in="d" in2="m" operator="in"/></filter>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="2.6"/></symbol>
   <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6L8 10zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
@@ -52,7 +53,7 @@
   <div class="wrap">
     <div>
       <p class="kick">لمدراء المخيمات ومراكز الإيواء</p>
-      <h1>سجلّ المخيم كلّه <span class="lt">في جوالك.</span></h1>
+      <h1>سجلّ المخيم <span class="pen">كلّه<svg viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M98 7 C 70 2, 40 11, 2 5"/></svg></span> <span class="lt">في جوالك.</span></h1>
       <p class="lede">الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، وصُمّم من داخل مخيم في قطاع غزة.</p>
       <div class="ctas">
         <button type="button" class="btn b-tour" data-tour-start><span class="pl"><svg><use href="#i-play"/></svg></span><span>ابدأ الجولة<small>دقيقتان بالصوت</small></span></button>
@@ -68,13 +69,14 @@
       </div>
     </div>
   </div>
+  <svg class="art" aria-hidden="true"></svg>
 </section>
 
 <section class="ch dark full morning" id="c1" data-in aria-labelledby="h1c">
   <div class="wrap">
     <div>
       <div class="cno"><b>01</b>بداية اليوم</div>
-      <p class="clock rv" aria-hidden="true">7:02<small>صباحًا</small></p>
+      <p class="clock rv" aria-hidden="true"><span class="hm" data-clock>7:02</span><small>صباحًا</small></p>
       <h2 id="h1c" class="rv d1">يبدأ يوم مدير المخيم <span class="lt">بطلبات لا تنتهي.</span></h2>
     </div>
     <div class="msgs" aria-label="رسائل تصل مدير المخيم صباحًا">
@@ -262,6 +264,7 @@
     </div>
     <p class="mail">أو بالبريد: <a class="m" href="mailto:eiwaa.system@proton.me">eiwaa.system@proton.me</a></p>
   </div>
+  <svg class="art" aria-hidden="true"></svg>
 </section>
 </main>
 

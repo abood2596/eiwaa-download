@@ -2,6 +2,7 @@
 (function(){
 'use strict';
 document.body.classList.remove('no-js');
+requestAnimationFrame(function(){requestAnimationFrame(function(){document.body.classList.add('ready')})});
 var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
 var PATH=document.body.dataset.path||'camp';
 var AUTO={},STORY={show:function(){}},TOUR={on:false};
@@ -17,6 +18,10 @@ var d0=new Date();$$('[data-today]').forEach(function(e){e.textContent=('0'+d0.g
 /* entrance */
 var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -12% 0px',threshold:.15}):null;
 $$('[data-in]').forEach(function(e){io?io.observe(e):e.classList.add('in')});
+
+/* the clock runs to 7:02 when the morning scene opens */
+var clk=$('[data-clock]');
+if(clk&&io&&!RM){clk.textContent='6:54';var cko=new IntersectionObserver(function(es){if(es[0].isIntersecting){cko.disconnect();var m=54;(function t(){m++;clk.textContent=m<60?'6:'+m:'7:0'+(m-60);if(m<62)setTimeout(t,110)})()}},{threshold:.5});cko.observe(clk)}
 
 /* ---------- sound effects, synthesised (no download) ---------- */
 var AC=null,muted=false;
@@ -166,6 +171,48 @@ if(pv){
   AUTO.privacy=function(){if(pv.getAttribute('aria-checked')!=='true')pv.click()};
 }
 
+
+/* ---------- the camp at night: every tent is a family; a light comes on when it is registered ---------- */
+function rnd(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}}
+function campArt(svg,o){
+  var R=rnd(o.seed||7),W=1200,H=o.h||300,h='',n=0;
+  var rows=[{y:H*.40,s:.42,n:34,a:.42},{y:H*.60,s:.6,n:24,a:.62},{y:H*.81,s:.8,n:17,a:.82},{y:H*1.02,s:1,n:12,a:1}];
+  rows.forEach(function(r){
+    var step=W/r.n;
+    for(var i=0;i<r.n;i++){
+      if(R()<.12)continue;
+      var x=step*(i+.5)+(R()-.5)*step*.5,w=30*r.s*(.85+R()*.35),t=42*r.s*(.85+R()*.3),y=r.y,big=R()<.25,ww=big?w*1.6:w;
+      h+='<g opacity="'+r.a+'"><path class="tn" d="M'+(x-ww).toFixed(1)+','+y.toFixed(1)+' L'+(x-ww*.15).toFixed(1)+','+(y-t).toFixed(1)+' L'+(x+ww*.15).toFixed(1)+','+(y-t).toFixed(1)+' L'+(x+ww).toFixed(1)+','+y.toFixed(1)+'"/>'+
+         '<path class="dr" d="M'+(x-w*.22).toFixed(1)+','+y.toFixed(1)+' L'+x.toFixed(1)+','+(y-t*.62).toFixed(1)+' L'+(x+w*.22).toFixed(1)+','+y.toFixed(1)+'Z"/></g>';
+      n++;
+    }
+    h+='<path class="gd" opacity="'+r.a+'" d="M0,'+(r.y+.5).toFixed(1)+' H'+W+'"/>';
+  });
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.setAttribute('preserveAspectRatio','xMidYMax slice');
+  svg.innerHTML=h;
+  var ds=$$('.dr',svg),order=ds.map(function(_,i){return i}).sort(function(){return R()-.5}),lit=0;
+  svg.lightTo=function(frac,ms,cb){
+    var target=Math.round(ds.length*frac);if(RM)ms=0;
+    var per=target>lit?ms/(target-lit):0;
+    (function on(){if(lit>=target){if(cb)cb();return}ds[order[lit++]].classList.add('lit');if(per)setTimeout(on,per);else on()})();
+  };
+  return svg;
+}
+var heroArt=$('.hero .art'),endArt=$('.close .art');
+if(heroArt){campArt(heroArt,{seed:11,h:300});var ho=io?new IntersectionObserver(function(es){if(es[0].isIntersecting){ho.disconnect();setTimeout(function(){heroArt.lightTo(.72,5200)},RM?0:600)}},{threshold:.2}):null;ho?ho.observe(heroArt):heroArt.lightTo(.72,0)}
+if(endArt){campArt(endArt,{seed:11,h:300});endArt.lightTo(.72,0);var eo=io?new IntersectionObserver(function(es){if(es[0].isIntersecting){eo.disconnect();setTimeout(function(){endArt.lightTo(1,2600)},RM?0:500)}},{threshold:.4}):null;eo?eo.observe(endArt):endArt.lightTo(1,0)}
+
+/* org: many camps, one register */
+var netArt=$('.netart');
+if(netArt){
+  var NR=rnd(5),cx=600,cy=372,g='',k;
+  [[120,150],[330,90],[600,60],[870,90],[1080,150]].forEach(function(p,hi){
+    g+='<path class="ln" pathLength="1" d="M'+p[0]+','+(p[1]+26)+' C'+p[0]+','+(p[1]+170)+' '+cx+','+(cy-160)+' '+cx+','+(cy-40)+'" style="--d:'+(hi*.12)+'s"/>';
+    for(k=0;k<7;k++){var x=(p[0]+(k-3)*24+(NR()-.5)*8).toFixed(1),y=p[1]+(k%2)*14;g+='<path class="tn" d="M'+(x-11)+','+y+' L'+x+','+(y-15)+' L'+(+x+11)+','+y+'"/><path class="dr" d="M'+(x-2.6)+','+y+' L'+x+','+(y-9)+' L'+(+x+2.6)+','+y+'Z" style="--d:'+(.7+hi*.12+k*.05).toFixed(2)+'s"/>'}
+  });
+  netArt.setAttribute('viewBox','0 0 1200 420');netArt.innerHTML=g;
+}
+
 /* ======================= the narrated tour ======================= */
 function scrollToEl(el,block){var r=el.getBoundingClientRect(),hd=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hd'))||64,tb=document.body.classList.contains('touring')&&bar?bar.offsetHeight:0,avail=innerHeight-hd-tb;var y=block==='center'?r.top+scrollY-hd-Math.max(8,(avail-r.height)/2):r.top+scrollY-hd-8;scrollTo({top:Math.max(0,y),behavior:RM?'auto':'smooth'})}
 var LINES={};try{LINES=JSON.parse($('#lines').textContent)}catch(e){}
@@ -178,7 +225,7 @@ var PLAN={
     {sec:'#c5',line:'off',wait:'off2',react:'off_saved',then:{wait:'sync',react:'off_sync'},focus:'.panel'},
     {sec:'#c6',story:['j1','j2','j3','j4','j5']},
     {sec:'#c7',line:'film',wait:'film',focus:'.vbox',film:true},
-    {sec:'#c9',line:'close'}
+    {sec:'#c9',line:'close',art:true}
   ],
   org:[
     {sec:'#o1',line:'intro'},
@@ -188,7 +235,7 @@ var PLAN={
     {sec:'#o5',line:'chain'},
     {sec:'#o6',line:'privacy',wait:'privacy',react:'privacy_done',focus:'.priv'},
     {sec:'#o7',line:'film',wait:'film',focus:'.vbox',film:true},
-    {sec:'#o9',line:'close'}
+    {sec:'#o9',line:'close',art:true}
   ]
 }[PATH];
 var bar=$('.tbar'),capEl=$('.cap',bar),dotsEl=$('.tdots',bar);
@@ -230,6 +277,7 @@ async function play(from){
       var sec=$(s.sec),fe=s.focus&&$(s.focus);sec.classList.add('in');if(fe&&innerWidth<=980){scrollToEl(sec);await sleep(RM?100:900,id);scrollToEl(fe,'center')}else scrollToEl(fe&&innerHeight<900?fe:sec,fe&&innerHeight<900?'center':0);
       await sleep(RM?150:700,id);
       if(s.sfx)sfx(s.sfx);
+      if(s.art&&endArt)endArt.lightTo(1,2600,function(){sfx('chime')});
       if(s.story){for(var j=0;j<s.story.length;j++){STORY.show(j);await sleep(RM?100:450,id);await say(s.story[j],id);await sleep(500,id)}continue}
       await say(s.line,id);
       if(s.wait){
