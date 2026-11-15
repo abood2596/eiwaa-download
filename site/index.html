@@ -3,358 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>إيواء · نظام إدارة مراكز الإيواء</title>
-<meta name="description" content="إيواء نظام لإدارة مراكز الإيواء: سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، ومجاني للمخيمات.">
+<title>إيواء · سجلّ المخيم كلّه في جوالك</title>
+<meta name="description" content="إيواء نظام لإدارة المخيمات ومراكز الإيواء: سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، ومجاني للمخيمات.">
 <meta name="theme-color" content="#0F2747">
-<meta property="og:title" content="إيواء · منظومة واحدة، لكل المخيمات">
-<meta property="og:description" content="سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت.">
+<link rel="canonical" href="https://eiwaa.bdalhmydalfra879.workers.dev/">
+<meta property="og:site_name" content="إيواء">
+<meta property="og:title" content="إيواء · سجلّ المخيم كلّه في جوالك">
+<meta property="og:description" content="سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، ومجاني للمخيمات.">
 <meta property="og:image" content="https://eiwaa.bdalhmydalfra879.workers.dev/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="إيواء: سجلّ المخيم كلّه في جوالك">
 <meta property="og:url" content="https://eiwaa.bdalhmydalfra879.workers.dev/">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="favicon.png">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="preload" href="fonts/plex_bold.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face{font-family:Plex;font-weight:300;font-display:swap;src:url(fonts/plex_light.woff2) format("woff2")}
-@font-face{font-family:Plex;font-weight:400;font-display:swap;src:url(fonts/plex_regular.woff2) format("woff2")}
-@font-face{font-family:Plex;font-weight:500;font-display:swap;src:url(fonts/plex_medium.woff2) format("woff2")}
-@font-face{font-family:Plex;font-weight:600;font-display:swap;src:url(fonts/plex_semibold.woff2) format("woff2")}
-@font-face{font-family:Plex;font-weight:700;font-display:swap;src:url(fonts/plex_bold.woff2) format("woff2")}
-@font-face{font-family:Mono;font-display:swap;src:url(fonts/plex_mono.woff2) format("woff2")}
-:root{
-  --paper:#F3F0E8;--sheet:#FBFAF6;--rule:#DED7C8;--rule2:#ECE7DC;--ink:#0E1726;--ink2:#465163;--ink3:#646D7D;
-  --tarp:#1D4E8F;--tarp2:#163E73;--night:#0F2747;--night2:#0A1B33;--line:#24406A;--mist:#B9C8DE;--mist2:#8197B8;
-  --red:#B42318;--redbg:#FBEBE9;--amber:#93560A;--amberbg:#FAF0DF;--green:#2B6649;--greenbg:#E3F0E8;--wa:#1E6B42;
-  --ease:cubic-bezier(.2,.8,.2,1);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:76px;-webkit-text-size-adjust:100%}
-body{font-family:Plex,system-ui,sans-serif;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-img,video{max-width:100%;display:block}
-a{color:inherit}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.m{font-family:Mono,ui-monospace,monospace;direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-.skip{position:absolute;right:-999px;top:8px;background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;z-index:99}.skip:focus{right:8px}
-:focus-visible{outline:3px solid #6FA0E0;outline-offset:3px;border-radius:8px}
-[hidden]{display:none!important}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:12px;font-weight:600;font-size:16.5px;line-height:1;text-decoration:none;white-space:nowrap;transition:transform .15s var(--ease),background-color .2s,border-color .2s,color .2s}
-.btn:active{transform:scale(.97)}
-.btn svg{width:20px;height:20px;flex:none}
-.b-light{background:var(--sheet);color:var(--night)}.b-light:hover{background:#fff}
-.b-ghost{border:1.5px solid var(--line);color:#fff}.b-ghost:hover{border-color:var(--mist2)}
-.b-tarp{background:var(--tarp);color:#fff}.b-tarp:hover{background:var(--tarp2)}
-.b-wa{background:var(--wa);color:#fff}.b-wa:hover{background:#185636}
-
-/* header: fully opaque */
-.top{position:sticky;top:0;z-index:50;background:var(--night);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:16px;height:64px}
-.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:20px;margin-inline-end:auto}
-.logo img{width:34px;height:34px;border-radius:9px}
-.seg{display:flex;background:var(--night2);border:1px solid var(--line);border-radius:12px;padding:3px;position:relative}
-.seg button{position:relative;z-index:1;color:var(--mist);font-size:14.5px;font-weight:600;padding:0 14px;height:36px;border-radius:9px;transition:color .25s}
-.seg button[aria-pressed=true]{color:var(--night)}
-.seg i{position:absolute;top:3px;bottom:3px;right:3px;width:0;border-radius:9px;background:var(--sheet);transition:right .35s var(--ease),width .35s var(--ease)}
-.top .btn{min-height:40px;padding:0 16px;font-size:14.5px}
-.top .dl-ico{display:none}
-
-/* hero */
-.hero{background:var(--night);color:#fff;position:relative;overflow:hidden}
-.hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px);background-size:100% 48px;opacity:.28;pointer-events:none}
-.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-top:72px;padding-bottom:84px}
-.kick{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--mist);margin-bottom:22px}
-.kick .m{border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-size:12.5px;color:var(--mist2)}
-h1{font-size:clamp(40px,6vw,74px);line-height:1.1;font-weight:700;letter-spacing:-.6px}
-h1 .lt{display:block;font-weight:300;color:var(--mist)}
-.lede{font-size:clamp(17px,1.9vw,19.5px);color:#C9D5E7;max-width:520px;margin:22px 0 32px}
-.ctas{display:flex;flex-wrap:wrap;gap:12px}
-.fine{font-size:14px;color:var(--mist2);margin-top:16px}
-
-/* ID check card */
-.idc{background:var(--sheet);color:var(--ink);border-radius:20px;padding:24px;position:relative;box-shadow:0 30px 60px rgba(4,12,26,.45)}
-.idc-hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:10px}
-.idc-hd b{font-size:17px}.idc-hd span{font-size:12.5px;color:var(--ink3)}
-.idc label{display:block;font-size:14px;color:var(--ink2);margin:16px 0 8px}
-.idc input{width:100%;font:500 30px/1 Mono,monospace;letter-spacing:.3em;direction:ltr;text-align:left;padding:14px 16px;border:1.5px solid var(--rule);border-radius:12px;background:#fff;color:var(--ink);transition:border-color .2s}
-.idc input::placeholder{color:#CFC8B9}
-.idc input:focus{outline:none;border-color:var(--tarp)}
-.idc input:focus-visible{outline:3px solid #6FA0E0;outline-offset:2px}
-.res{min-height:52px;display:flex;align-items:center;font-size:15px;color:var(--ink2);margin-top:8px;line-height:1.5}
-.res b{font-weight:600;margin-inline-end:4px}
-.res.ok{color:var(--green)}.res.bad{color:var(--amber)}.res.dup{color:var(--red)}
-.tries{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.tries button{font-size:13.5px;border:1px solid var(--rule);border-radius:999px;padding:7px 13px;color:var(--ink2);background:#fff;transition:border-color .2s}
-.tries button:hover{border-color:var(--ink3)}
-.reg div{display:grid;grid-template-columns:56px 1fr 104px;gap:10px;align-items:center;padding:9px 6px;border-top:1px solid var(--rule2);font-size:14.5px;border-radius:8px;transition:background-color .3s}
-.reg .m{font-size:13px;color:var(--ink3)}
-.reg .hit{background:var(--redbg)}
-#stampbox .stamp{top:-18px;left:18px;font-size:17px}
-
-.stamp{position:absolute;font-weight:700;font-size:16px;border:3px solid currentColor;border-radius:10px;padding:2px 12px;background:var(--sheet);transform:rotate(-8deg);white-space:nowrap;pointer-events:none}
-.s-ok{color:var(--green)}.s-bad{color:var(--amber)}.s-dup{color:var(--red)}
-.thud{animation:thud .42s var(--ease) both}
-@keyframes thud{0%{opacity:0;transform:rotate(-8deg) scale(1.8)}60%{opacity:1;transform:rotate(-8deg) scale(.95)}100%{opacity:1;transform:rotate(-8deg) scale(1)}}
-
-/* sections */
-.sec{padding:104px 0}
-.alt{background:var(--sheet);border-block:1px solid var(--rule)}
-.hd{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-bottom:44px}
-.hd.one{grid-template-columns:1fr;gap:14px}
-.no{font-size:13px;color:var(--ink3);border-top:2px solid var(--ink);padding-top:10px;align-self:start;width:100%}
-.hd.one .no{width:64px}
-h2{font-size:clamp(30px,4.2vw,48px);line-height:1.2;font-weight:700;letter-spacing:-.4px;max-width:760px}
-.sub{color:var(--ink2);font-size:18px;max-width:620px;margin-top:12px}
-
-/* before / after */
-.ba{position:relative;border:1px solid var(--rule);border-radius:20px;overflow:hidden;background:var(--sheet);direction:ltr;user-select:none;-webkit-user-select:none;touch-action:pan-y}
-.ba-l{direction:rtl;padding:24px 28px 72px}
-.ba-after{position:absolute;inset:0;background:#fff;clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
-.ba h3{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;font-weight:600;color:var(--ink2);margin-bottom:6px}
-.row{display:grid;grid-template-columns:1fr 116px 104px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule2);font-size:15.5px}
-.ba-before .row{border-bottom:1px dashed var(--rule)}
-.ba-before .hl{background:var(--redbg)}
-.ba-before s{text-decoration-color:var(--red);text-decoration-thickness:2px;color:var(--ink3)}
-.q{color:var(--amber);font-weight:600}
-.tag{font-size:12.5px;font-weight:600;text-align:center;border-radius:6px;padding:3px 8px}
-.t-ok{color:var(--green);background:var(--greenbg)}.t-am{color:var(--amber);background:var(--amberbg)}.t-st{color:var(--red);background:var(--redbg)}
-.ba .stamp{bottom:20px}
-.ba-before .stamp{right:24px;color:var(--red)}
-.ba-after .stamp{left:24px;color:var(--green)}
-.bar{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;margin-left:-1px;background:var(--night);pointer-events:none}
-.knob{position:absolute;top:50%;left:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:var(--night);border:4px solid #fff;display:grid;place-items:center;color:#fff}
-.knob svg{width:22px;height:22px}
-.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
-.ba input:focus-visible~.bar .knob{outline:3px solid #6FA0E0;outline-offset:3px}
-.cap2{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink3);margin-top:12px}
-
-/* story: sticky phone (desktop), swipe (mobile) */
-.story{display:grid;grid-template-columns:1fr 320px;gap:72px}
-.phone{position:sticky;top:96px;align-self:start;height:calc(100vh - 128px);max-height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
-.dev{position:relative;width:290px;aspect-ratio:540/1170;border-radius:36px;border:9px solid var(--night);background:#fff;overflow:hidden;box-shadow:0 26px 50px rgba(15,39,71,.2)}
-.dev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--ease)}
-.dev img.on{opacity:1}
-.prog{display:flex;gap:6px}
-.prog b{width:8px;height:8px;border-radius:4px;background:var(--rule);transition:width .3s var(--ease),background-color .3s}
-.prog b.on{width:24px;background:var(--night)}
-.st{min-height:78vh;display:flex;flex-direction:column;justify-content:center;opacity:.25;transition:opacity .4s}
-.st.on{opacity:1}
-.st figure{display:none}
-.st>.m{font-size:13px;color:var(--tarp)}
-.st h3{font-size:clamp(25px,3vw,34px);line-height:1.25;margin:8px 0 12px}
-.st p{color:var(--ink2);max-width:460px}
-.st ul{list-style:none;margin-top:14px}
-.st li{padding:6px 20px 6px 0;position:relative;font-size:15.5px;color:var(--ink2)}
-.st li:before{content:"";position:absolute;right:0;top:17px;width:10px;height:2px;background:var(--tarp)}
-.swipe{display:none}
-
-/* offline demo */
-.off{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
-.panel{background:#fff;border:1px solid var(--rule);border-radius:20px;padding:22px}
-.ph{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--rule2)}
-.sw{display:inline-flex;align-items:center;gap:12px;font-weight:600;font-size:15.5px;min-height:44px}
-.sw .tr{width:52px;height:30px;border-radius:15px;background:var(--rule);position:relative;transition:background-color .25s}
-.sw .tr:after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:right .25s var(--ease)}
-.sw[aria-checked=true] .tr{background:var(--green)}
-.sw[aria-checked=true] .tr:after{right:25px}
-.net{font-size:13.5px;font-weight:600;padding:4px 12px;border-radius:999px}
-.net.on{color:var(--green);background:var(--greenbg)}.net.off{color:var(--amber);background:var(--amberbg)}
-.ol{list-style:none;min-height:226px;padding:4px 0}
-.ol li{display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--rule2);font-size:15px;animation:in .35s var(--ease) both}
-.ol li.empty{display:block;border:0;animation:none;color:var(--ink3);font-size:14.5px;padding:20px 4px}
-.ol .m{font-size:13px;color:var(--ink3)}
-@keyframes in{from{opacity:0;transform:translateY(-8px)}}
-.pf{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;border-top:1px solid var(--rule2)}
-.pf small{font-size:14.5px;color:var(--ink2)}
-.pf .btn{min-height:46px;font-size:15.5px}
-
-/* films */
-.film{background:var(--night);color:#fff}
-.film .no{color:var(--mist2);border-color:var(--mist)}
-.film .sub{color:#C9D5E7}
-.f1{display:grid;grid-template-columns:1fr 340px;gap:72px;align-items:center}
-.vphone{border-radius:34px;border:9px solid #1B355C;overflow:hidden;background:#000;aspect-ratio:9/16}
-.vwide{border-radius:18px;border:1px solid var(--line);overflow:hidden;aspect-ratio:16/9;background:#000}
-.vphone video,.vwide video{width:100%;height:100%;object-fit:cover;background:#000}
-.facts{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:36px}
-.facts div{padding:16px 0 0;font-size:14px;color:var(--mist2)}
-.facts b{display:block;color:#fff;font-size:18px;font-weight:600}
-
-/* install */
-.inst{display:grid;grid-template-columns:1fr 1fr 1fr 220px;gap:28px;align-items:start}
-.inst .s{border-top:2px solid var(--ink);padding-top:14px}
-.inst .n{font:300 44px/1 Plex;color:var(--tarp)}
-.inst h3{font-size:18.5px;margin:12px 0 4px}
-.inst p{font-size:15px;color:var(--ink2)}
-.qr{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:18px;text-align:center}
-.qr img{width:150px;height:150px;margin:0 auto 10px}
-.qr small{font-size:13.5px;color:var(--ink2)}
-.dlrow{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;margin-top:36px}
-.dlrow small{font-size:14px;color:var(--ink3)}
-
-/* org */
-.chain{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);position:relative}
-.chain:before{content:"";position:absolute;top:11px;right:10%;left:10%;height:2px;background:var(--rule)}
-.chain li{position:relative;padding:0 12px;text-align:center}
-.chain li:before{content:"";display:block;width:24px;height:24px;margin:0 auto 18px;border-radius:50%;background:var(--paper);border:2px solid var(--tarp);position:relative;z-index:1}
-.chain li:last-child:before{background:var(--tarp)}
-.chain h3{font-size:18px}
-.chain p{font-size:14.5px;color:var(--ink2);line-height:1.55;margin-top:4px}
-.spec{border-top:2px solid var(--ink)}
-.spec>div{display:grid;grid-template-columns:110px 280px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--rule);align-items:baseline}
-.spec .m{font-size:13px;color:var(--tarp)}
-.spec h3{font-size:18.5px}
-.spec p{color:var(--ink2);font-size:16px}
-.soon{font-size:12px;font-weight:600;color:var(--amber);border:1px solid currentColor;border-radius:5px;padding:0 6px;margin-inline-start:8px;vertical-align:2px}
-.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:56px}
-.trust div{border-top:2px solid var(--ink);padding-top:14px}
-.trust h3{font-size:18px;margin-bottom:4px}
-.trust p{font-size:15.5px;color:var(--ink2)}
-.offer{margin-top:64px;background:var(--night);color:#fff;border-radius:22px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center}
-.offer h3{font-size:clamp(23px,2.6vw,30px);line-height:1.3}
-.offer p{color:#C9D5E7;margin-top:6px}
-
-/* faq + close */
-.faq{max-width:820px;border-top:2px solid var(--ink)}
-details{border-bottom:1px solid var(--rule)}
-summary{list-style:none;cursor:pointer;padding:20px 0;font-weight:600;font-size:17.5px;display:flex;justify-content:space-between;gap:16px}
-summary::-webkit-details-marker{display:none}
-summary:after{content:"+";font-weight:300;font-size:28px;line-height:.9;color:var(--tarp);transition:transform .25s var(--ease)}
-details[open] summary:after{transform:rotate(45deg)}
-details p{padding:0 0 20px;color:var(--ink2);max-width:680px}
-.close{background:var(--night);color:#fff;padding:112px 0;text-align:center}
-.close h2{margin:0 auto;font-size:clamp(34px,5vw,58px)}
-.close p{color:#C9D5E7;margin:14px auto 34px;max-width:520px}
-.close .ctas{justify-content:center}
-footer{background:var(--night2);color:var(--mist2);font-size:14px}
-footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:22px;padding-bottom:calc(22px + env(safe-area-inset-bottom))}
-footer a{text-decoration:none}footer a:hover{color:#fff}
-
-.rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.rv.in{opacity:1;transform:none}
-.no-js .rv{opacity:1;transform:none}
-
-@media (max-width:980px){
-  .hero .wrap{grid-template-columns:1fr;gap:40px;padding-top:48px}
-  .story{grid-template-columns:1fr}
-  .phone{display:none}
-  .swipe{display:block}
-  .steps{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-24px;padding:0 24px 8px;scrollbar-width:none}
-  .steps::-webkit-scrollbar{display:none}
-  .st{flex:0 0 min(76%,300px);min-height:0;opacity:1;scroll-snap-align:start;justify-content:flex-start}
-  .st figure{display:block;border-radius:26px;border:7px solid var(--night);overflow:hidden;background:#fff;aspect-ratio:540/1170;margin-bottom:16px}
-  .st figure img{width:100%;height:100%;object-fit:cover}
-  .st h3{font-size:21px;margin:4px 0 6px}.st p{font-size:15.5px}.st ul{display:none}
-  .off,.f1{grid-template-columns:1fr;gap:36px}
-  .f1 .vphone{max-width:320px;margin:0 auto;width:100%}
-  .inst{grid-template-columns:1fr 1fr 1fr}.qr{display:none}
-  .chain{grid-template-columns:1fr}
-  .chain:before{top:12px;bottom:34px;right:11px;left:auto;width:2px;height:auto}
-  .chain li{display:grid;grid-template-columns:24px 1fr;gap:2px 18px;text-align:right;padding:0 0 24px}
-  .chain li:before{margin:0;grid-row:span 2}
-  .spec>div{grid-template-columns:96px 1fr;gap:4px 16px}
-  .spec p{grid-column:2}
-  .offer{grid-template-columns:1fr;padding:30px}
-}
-@media (max-width:640px){
-  body{font-size:16px}
-  .wrap{padding:0 20px}
-  .top .wrap{gap:10px;height:60px}
-  .logo span{display:none}
-  .seg button{padding:0 12px;font-size:14px}
-  .top .dl-txt{display:none}.top .dl-ico{display:block}
-  .top .btn{width:44px;padding:0}
-  .hero .wrap{padding-top:40px;padding-bottom:64px}
-  .ctas .btn{flex:1 1 auto}
-  .idc{padding:18px}
-  .idc input{font-size:23px;letter-spacing:.22em;padding:12px}
-  .reg div{grid-template-columns:48px 1fr 92px;font-size:14px}
-  .sec{padding:76px 0}
-  .hd{grid-template-columns:1fr;gap:14px;margin-bottom:32px}
-  .no{width:64px}
-  .ba-l{padding:18px 14px 66px}
-  .row{grid-template-columns:1fr 78px 84px;gap:6px;font-size:14px}
-  .tag{padding:3px 4px}
-  .ba h3{font-size:12.5px}
-  .inst,.trust{grid-template-columns:1fr;gap:22px}
-  .facts b{font-size:16px}
-  .steps{margin-inline:-20px;padding:0 20px 8px}
-  .dlrow .btn,.offer .btn{width:100%}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*:before,*:after{transition:none!important;animation:none!important}
-  .rv{opacity:1;transform:none}
-}
-</style>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/favicon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preload" href="/fonts/s-bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/a/e.css">
 </head>
-<body class="no-js">
+<body class="no-js" data-path="camp">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14" stroke-width="2.6"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6L8 10zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6L8 10zM17 9.5l5 5M22 9.5l-5 5"/></symbol>
+  <symbol id="i-cc" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M7 11h6M7 14.5h10"/></symbol>
+  <symbol id="i-skip" viewBox="0 0 24 24"><path d="M17 5v14M15 12 5 5v14z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-lr" viewBox="0 0 24 24"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.5a6 6 0 0 1-4.6-2.2L4.5 15.5a1.5 1.5 0 0 1 2.3-1.9L9 16"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+</svg>
 <a class="skip" href="#main">انتقل إلى المحتوى</a>
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="إيواء، أعلى الصفحة"><img src="img/icon.png" alt="" width="34" height="34"><span>إيواء</span></a>
-    <div class="seg" role="group" aria-label="اختر ما يناسبك">
-      <i aria-hidden="true"></i>
-      <button type="button" data-p="camp" aria-pressed="true">مدير مخيم</button>
-      <button type="button" data-p="org" aria-pressed="false">مؤسسة</button>
-    </div>
-    <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk" aria-label="تحميل التطبيق">
-      <span class="dl-txt">تحميل التطبيق</span>
-      <svg class="dl-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
-    </a>
+    <a class="logo" href="/" aria-label="إيواء، الصفحة الرئيسية"><img src="/img/icon.png" alt="" width="34" height="34"><span>إيواء</span></a>
+    <nav class="seg" aria-label="اختر ما يناسبك"><a href="/" aria-current="page">مدير مخيم</a><a href="/org/">مؤسسة</a></nav>
+    <a class="btn b-light" href="#install">تحميل<span class="long">&nbsp;التطبيق</span></a>
   </div>
 </header>
 
 <main id="main">
-<section class="hero" id="top">
+<section class="hero">
   <div class="wrap">
     <div>
-      <div data-for="camp">
-        <div class="kick"><span class="m">EIWAA</span>لمدراء المخيمات</div>
-        <h1>سجلّ المخيم كلّه <span class="lt">في جوالك.</span></h1>
-        <p class="lede">الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، وصُمّم من داخل مخيم في قطاع غزة.</p>
-        <div class="ctas">
-          <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>حمّل التطبيق مجانًا</a>
-          <a class="btn b-ghost" href="#film1"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>شاهد الفيلم</a>
-        </div>
-        <p class="fine">أندرويد 8 فما فوق · مجاني للمخيمات</p>
+      <p class="kick">لمدراء المخيمات ومراكز الإيواء</p>
+      <h1>سجلّ المخيم كلّه <span class="lt">في جوالك.</span></h1>
+      <p class="lede">الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، وصُمّم من داخل مخيم في قطاع غزة.</p>
+      <div class="ctas">
+        <button type="button" class="btn b-tour" data-tour-start><span class="pl"><svg><use href="#i-play"/></svg></span><span>ابدأ الجولة<small>دقيقتان بالصوت</small></span></button>
+        <a class="btn b-ghost" href="#install">حمّل التطبيق مجانًا</a>
       </div>
-      <div data-for="org" hidden>
-        <div class="kick"><span class="m">EIWAA</span>للمؤسسات ومنسّقي المشاريع</div>
-        <h1>كشوفات نظيفة <span class="lt">من كل المخيمات.</span></h1>
-        <p class="lede">كل أسرة مسجّلة مرة واحدة، وكل رقم له مصدر، وكل كشف يصلكم برقم مرجعي وبالصيغة التي تطلبونها.</p>
-        <div class="ctas">
-          <a class="btn b-light" data-wa="السلام عليكم، نود تجربة إيواء لمخيم واحد" href="#contact">اطلبوا تجربة لمخيم واحد</a>
-          <a class="btn b-ghost" href="#film2"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>شاهدوا الفيلم</a>
-        </div>
-        <p class="fine">تجربة 60 يومًا · البيانات تبقى ملككم</p>
-      </div>
+      <p class="fine">أندرويد 8 فما فوق · مجاني للمخيمات · أو مرّر الصفحة بهدوء</p>
     </div>
-
-    <div class="idc" role="region" aria-labelledby="idc-t">
-      <div class="idc-hd"><b id="idc-t">جرّب بنفسك: فحص رقم الهوية</b><span class="m" id="today"></span></div>
-      <label for="idin">اكتب رقم هوية من 9 أرقام</label>
-      <input id="idin" inputmode="numeric" autocomplete="off" maxlength="9" placeholder="•••••••••" aria-describedby="res">
-      <div class="res" id="res" aria-live="polite">يُفحص الرقم على جهازك فقط، ولا يُرسل لأي مكان.</div>
-      <div class="tries"><button type="button" data-try="dup">جرّب رقمًا مسجّلًا</button><button type="button" data-try="bad">جرّب رقمًا فيه خطأ</button></div>
-      <div class="reg" id="reg" aria-label="مثال من سجل الأسر"></div>
-      <div id="stampbox"></div>
+    <div class="vis">
+      <div class="phone">
+        <div class="scr"><img class="on" src="/img/01-today.webp" alt="شاشة «اليوم» في تطبيق إيواء: أرقام المخيم والتنبيهات" width="540" height="1170" fetchpriority="high"></div>
+        <span class="chip a"><span class="dot"></span>ناقصة بيانات · بحاجة زيارة</span>
+        <span class="chip b"><span class="dot"></span>كل أسرة مرة واحدة</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ camp manager ============ -->
-<div data-for="camp" id="camp">
-<section class="sec" aria-labelledby="h-ba">
+<section class="ch dark full morning" id="c1" data-in aria-labelledby="h1c">
   <div class="wrap">
-    <div class="hd"><span class="no m">01</span><div><h2 id="h-ba" class="rv">الكشف نفسه، قبل إيواء وبعده.</h2><p class="sub rv">اسحب الخط، وشاهد الأسماء المكررة والأرقام الناقصة تتحول إلى سجل واحد واضح.</p></div></div>
-    <div class="ba rv" id="ba">
+    <div>
+      <div class="cno"><b>01</b>بداية اليوم</div>
+      <p class="clock rv" aria-hidden="true">7:02<small>صباحًا</small></p>
+      <h2 id="h1c" class="rv d1">يبدأ يوم مدير المخيم <span class="lt">بطلبات لا تنتهي.</span></h2>
+    </div>
+    <div class="msgs" aria-label="رسائل تصل مدير المخيم صباحًا">
+      <p class="msg"><small>مؤسسة · 7:02</small>نحتاج الكشف قبل الظهر.</p>
+      <p class="msg"><small>مؤسسة ثانية · 7:05</small>والأطفال تحت الخمس سنوات، لو سمحت.</p>
+      <p class="msg"><small>أحد السكان · 7:11</small>لم نستلم شيئًا منذ شهرين.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="c2" data-in aria-labelledby="h2c">
+  <div class="wrap">
+    <div class="cno"><b>02</b>الكشف</div>
+    <h2 id="h2c" class="rv">الكشف نفسه، <span class="lt">قبل إيواء وبعده.</span></h2>
+    <p class="sub rv d1">اسحب الخط، وشاهد الأسماء المكررة والأرقام الناقصة تتحول إلى سجل واحد واضح.</p>
+    <p class="ask rv d2"><svg class="i"><use href="#i-hand"/></svg>اسحب الخط</p>
+    <div class="ba" id="ba">
       <div class="ba-l ba-before" aria-hidden="true">
-        <h3><span>كشف_نهائي_٣ (معدّل).xlsx</span><span class="m">v7?</span></h3>
+        <h3><span>كشف_نهائي_٣ (معدّل).xlsx</span><span>نسخة؟</span></h3>
         <div class="row hl"><span>أحمد يوسف سالم</span><span class="m">40011····</span><span>استلم</span></div>
         <div class="row"><span><s>خالد إبراهيم</s> خالد نصر</span><span class="m">40022····</span><span>—</span></div>
         <div class="row hl"><span>احمد يوسف سالم</span><span class="m">40011····</span><span>استلم</span></div>
@@ -371,251 +110,190 @@ footer a{text-decoration:none}footer a:hover{color:#fff}
         <div class="row" style="border:0"><span>منى إبراهيم شعث</span><span class="m">F-007</span><span class="tag t-ok">مكتملة</span></div>
         <div class="stamp">لا تكرار</div>
       </div>
-      <input type="range" min="0" max="100" value="50" aria-label="قارن بين الكشف التقليدي وكشف إيواء">
-      <div class="bar"><div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6-6 6 6 6M15 6l6 6-6 6"/></svg></div></div>
+      <input type="range" min="0" max="100" value="50" aria-label="قارن بين الكشف التقليدي وكشف إيواء" aria-describedby="ba-sum">
+      <div class="bar"><div class="knob"><svg class="i"><use href="#i-lr"/></svg></div></div>
     </div>
+    <p class="vh" id="ba-sum">قبل إيواء: ملف إكسل فيه الاسم نفسه مرتين، وأسماء معدّلة باليد، وأرقام هوية ناقصة، ولا يُعرف من استلم. بعد إيواء: سجل واحد، لكل أسرة رقم، وحالة واضحة لكل أسرة: استلم، لم يستلم، ناقص الهوية، بحاجة زيارة.</p>
     <div class="cap2"><span>اليوم: كشف إكسل بنسخ كثيرة</span><span>في إيواء: سجل واحد</span></div>
   </div>
 </section>
 
-<section class="sec alt" aria-labelledby="h-st" style="padding-bottom:56px">
+<section class="ch full beat" id="c3" data-in aria-labelledby="h3c">
   <div class="wrap">
-    <div class="hd"><span class="no m">02</span><div><h2 id="h-st">رحلة أسرة واحدة، من الخيمة إلى كشف المؤسسة.</h2><p class="sub swipe">اسحب لترى الخطوات.</p></div></div>
-    <div class="story">
-      <div class="steps">
-        <article class="st" data-i="0"><figure><img src="img/03-family-profile.webp" alt="ملف أسرة في التطبيق" width="540" height="1170" loading="lazy"></figure><span class="m">A · F-047</span><h3>تُسجَّل الأسرة مرة واحدة</h3><p>برقم هوية يُفحص فورًا. وإن كانت مسجّلة من قبل، يظهر التنبيه قبل الحفظ.</p><ul><li>استيراد كشف الإكسل الحالي كما هو</li><li>قراءة رقم الهوية بالكاميرا</li><li>إعاقة، حمل، أمراض مزمنة، أيتام</li></ul></article>
-        <article class="st" data-i="1"><figure><img src="img/04-field-verification.webp" alt="شاشة التحقق الميداني" width="540" height="1170" loading="lazy"></figure><span class="m">B · OFFLINE</span><h3>يكمّل الفريق الناقص، خيمة بخيمة</h3><p>كل شيء يُحفظ على الجوال، ويُرسل وحده عند عودة الإنترنت.</p><ul><li>نسبة اكتمال لكل أسرة</li><li>توزيع المهام على المعاونين</li><li>اعتماد المدير للتغييرات المهمة</li></ul></article>
-        <article class="st" data-i="2"><figure><img src="img/09-distributions.webp" alt="شاشة التوزيع" width="540" height="1170" loading="lazy"></figure><span class="m">C · QR</span><h3>توزيع عادل بالبطاقة</h3><p>تُمسح بطاقة الأسرة عند الاستلام، فيعرف الجميع من استلم ومن لم يستلم.</p><ul><li>تنبيه عند الاستلام المكرر</li><li>كشف توقيع جاهز للطباعة</li><li>رسالة للأسر بموعد التوزيع</li></ul></article>
-        <article class="st" data-i="3"><figure><img src="img/05-report-builder.webp" alt="منشئ الكشوفات" width="540" height="1170" loading="lazy"></figure><span class="m">D · 2026/031</span><h3>كشف المؤسسة بصيغتها</h3><p>إكسل أو PDF برقم مرجعي، ويُسجَّل ما أُرسل لكل جهة.</p><ul><li>إخفاء أرقام الهوية والهواتف عند الحاجة</li><li>مطابقة كشف المستفيدين الراجع</li></ul></article>
-        <article class="st" data-i="4"><figure><img src="img/08-camp-observatory-dark.webp" alt="مرصد المخيم" width="540" height="1170" loading="lazy"></figure><span class="m">E · ALERTS</span><h3>المخيم ينبّهك قبل أن تُسأل</h3><p>من لم يستلم، وعدالة التوزيع، والبيانات المتناقضة، مرتبة حسب الأولوية.</p></article>
-      </div>
-      <div class="phone" aria-hidden="true">
-        <div class="dev">
-          <img class="on" src="img/03-family-profile.webp" alt="" width="540" height="1170">
-          <img src="img/04-field-verification.webp" alt="" width="540" height="1170" loading="lazy">
-          <img src="img/09-distributions.webp" alt="" width="540" height="1170" loading="lazy">
-          <img src="img/05-report-builder.webp" alt="" width="540" height="1170" loading="lazy">
-          <img src="img/08-camp-observatory-dark.webp" alt="" width="540" height="1170" loading="lazy">
-        </div>
-        <div class="prog"><b class="on"></b><b></b><b></b><b></b><b></b></div>
-      </div>
+    <h2 id="h3c" class="w">انتهى.</h2>
+    <div class="after">
+      <img src="/img/icon-192.png" alt="" width="84" height="84" loading="lazy">
+      <p><b>إيواء.</b> مخيّمك كلّه في جيبك.</p>
     </div>
   </div>
 </section>
 
-<section class="sec" aria-labelledby="h-off">
-  <div class="wrap off">
-    <div class="hd one" style="margin-bottom:0"><span class="no m">03</span><div>
-      <h2 id="h-off" class="rv">الإنترنت ينقطع. العمل لا يتوقف.</h2>
-      <p class="sub rv">سجّل أسرًا والإنترنت مقطوع، ثم شغّله: كل ما حُفظ على الجوال يُرسل وحده.</p></div></div>
-    <div class="panel rv">
+<section class="ch sheet" id="c4" data-in aria-labelledby="h4c">
+  <div class="wrap idwrap">
+    <div>
+      <div class="cno"><b>03</b>التسجيل</div>
+      <h2 id="h4c" class="rv">كل أسرة تُسجَّل <span class="lt">مرة واحدة.</span></h2>
+      <p class="sub rv d1">يُفحص رقم الهوية عند الكتابة. إذا كان فيه خطأ أو كانت الأسرة مسجّلة من قبل، يظهر التنبيه قبل الحفظ.</p>
+      <p class="ask rv d2"><svg class="i"><use href="#i-hand"/></svg>جرّب بنفسك</p>
+    </div>
+    <div class="idc rv d1" role="region" aria-labelledby="idc-t">
+      <div class="idc-hd"><b id="idc-t">فحص رقم الهوية</b><span class="m" data-today></span></div>
+      <label for="idin">اكتب رقم هوية من 9 أرقام</label>
+      <input id="idin" inputmode="numeric" autocomplete="off" maxlength="9" placeholder="•••••••••" aria-describedby="res">
+      <div class="res" id="res" aria-live="polite">يُفحص الرقم على جهازك فقط، ولا يُرسل لأي مكان.</div>
+      <div class="tries"><button type="button" data-try="dup">جرّب رقمًا مسجّلًا</button><button type="button" data-try="bad">جرّب رقمًا فيه خطأ</button></div>
+      <div class="reg" id="reg" aria-label="مثال من سجل الأسر"></div>
+      <div id="stampbox"></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch dark off" id="c5" data-in aria-labelledby="h5c">
+  <div class="wrap">
+    <div>
+      <div class="cno"><b>04</b>بدون إنترنت</div>
+      <h2 id="h5c" class="rv">الإنترنت ينقطع. <span class="lt">العمل لا يتوقف.</span></h2>
+      <p class="sub rv d1">اقطع الإنترنت وسجّل أسرتين، ثم أعِده: كل ما حُفظ على الجوال يُرسل وحده.</p>
+      <p class="ask rv d2"><svg class="i"><use href="#i-hand"/></svg>اقطع الإنترنت، ثم سجّل</p>
+    </div>
+    <div class="panel rv d1">
       <div class="ph">
-        <button type="button" class="sw" role="switch" aria-checked="false" id="sw"><span class="tr" aria-hidden="true"></span>الإنترنت</button>
-        <span class="net off" id="net">مقطوع</span>
+        <button type="button" class="sw" role="switch" aria-checked="true" id="sw"><span class="tr" aria-hidden="true"></span>الإنترنت</button>
+        <span class="net on" id="net">متصل</span>
       </div>
-      <ul class="ol" id="ol" aria-live="polite"><li class="empty">لم تُسجَّل أسر بعد. اضغط «سجّل أسرة».</li></ul>
+      <ul class="ol" id="ol" aria-live="polite"><li class="empty">لم تُسجَّل أسر بعد.</li></ul>
       <div class="pf"><small>بانتظار الإرسال: <b class="m" id="pend">0</b></small><button type="button" class="btn b-tarp" id="add">سجّل أسرة</button></div>
     </div>
   </div>
 </section>
 
-<section class="sec film" id="film1" aria-labelledby="h-f1">
-  <div class="wrap f1">
+<section class="ch" id="c6" aria-labelledby="h6c">
+  <div class="wrap">
+    <div class="cno"><b>05</b>رحلة أسرة</div>
+    <h2 id="h6c">من الخيمة <span class="lt">إلى كشف المؤسسة.</span></h2>
+    <div class="story">
+      <div class="steps">
+        <article class="st" data-i="0"><figure><img src="/img/03-family-profile.webp" alt="ملف أسرة في التطبيق" width="540" height="1170" loading="lazy"></figure><span class="k">التسجيل</span><h3>تُسجَّل الأسرة مرة واحدة</h3><p>برقم هوية يُفحص فورًا، مع كل أفرادها.</p><ul><li>استيراد كشف الإكسل الحالي كما هو</li><li>قراءة رقم الهوية بالكاميرا</li><li>إعاقة، حمل، أمراض مزمنة، أيتام</li></ul></article>
+        <article class="st" data-i="1"><figure><img src="/img/04-field-verification.webp" alt="شاشة التحقق الميداني" width="540" height="1170" loading="lazy"></figure><span class="k">التحقق الميداني</span><h3>يكمّل المعاون الناقص، خيمة بخيمة</h3><p>كل شيء يُحفظ على الجوال، ويُرسل عند عودة الإنترنت.</p><ul><li>نسبة اكتمال لكل أسرة</li><li>توزيع المهام على المعاونين</li><li>اعتماد المدير للتغييرات المهمة</li></ul></article>
+        <article class="st" data-i="2"><figure><img src="/img/09-distributions.webp" alt="شاشة التوزيع" width="540" height="1170" loading="lazy"></figure><span class="k">التوزيع</span><h3>توزيع عادل بالبطاقة</h3><p>تُمسح بطاقة الأسرة عند الاستلام، فيُعرف من استلم ومن لم يستلم.</p><ul><li>تنبيه عند الاستلام المكرر</li><li>كشف توقيع جاهز للطباعة</li></ul></article>
+        <article class="st" data-i="3"><figure><img src="/img/05-report-builder.webp" alt="إعداد كشف لمؤسسة" width="540" height="1170" loading="lazy"></figure><span class="k">الكشوفات</span><h3>كشف المؤسسة بصيغتها</h3><p>إكسل أو PDF برقم مرجعي، ويُسجَّل ما أُرسل لكل جهة.</p><ul><li>إخفاء أرقام الهوية والهواتف عند الحاجة</li><li>مطابقة كشف المستفيدين الراجع</li></ul></article>
+        <article class="st" data-i="4"><figure><img src="/img/08-camp-observatory-dark.webp" alt="مرصد المخيم" width="540" height="1170" loading="lazy"></figure><span class="k">مرصد المخيم</span><h3>المخيم ينبّهك قبل أن تُسأل</h3><p>من لم يستلم، وعدالة التوزيع، والبيانات المتناقضة، مرتبة حسب الأولوية.</p></article>
+      </div>
+      <div class="stick" aria-hidden="true">
+        <div class="phone">
+          <div class="scr">
+            <img class="on" src="/img/03-family-profile.webp" alt="" width="540" height="1170" loading="lazy">
+            <img src="/img/04-field-verification.webp" alt="" width="540" height="1170" loading="lazy">
+            <img src="/img/09-distributions.webp" alt="" width="540" height="1170" loading="lazy">
+            <img src="/img/05-report-builder.webp" alt="" width="540" height="1170" loading="lazy">
+            <img src="/img/08-camp-observatory-dark.webp" alt="" width="540" height="1170" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="prog" aria-hidden="true"><b class="on"></b><b></b><b></b><b></b><b></b><span>1 / 5</span></div>
+  </div>
+</section>
+
+<section class="ch dark film" id="c7" aria-labelledby="h7c">
+  <div class="wrap">
     <div>
-      <div class="hd one" style="margin-bottom:0"><span class="no m">04</span><div>
-        <h2 id="h-f1">يوم مدير المخيم، قبل إيواء وبعده.</h2>
-        <p class="sub">من «بدنا الكشف قبل الظهر» والأسماء المكررة، إلى كشف جاهز يُرسل خلال ثوانٍ.</p></div></div>
+      <div class="cno"><b>06</b>الفيلم</div>
+      <h2 id="h7c">يوم كامل في المخيم، <span class="lt">قبل إيواء وبعده.</span></h2>
+      <p class="sub">دقيقة وربع: من «نحتاج الكشف قبل الظهر» والأسماء المكررة، إلى كشف جاهز يُرسل خلال ثوانٍ.</p>
       <div class="facts"><div><b>بدون إنترنت</b>ويُرسل وحده</div><div><b>بلا تكرار</b>فحص رقم الهوية</div><div><b>مجاني</b>للمخيمات</div></div>
     </div>
-    <div class="vphone"><video src="film1.mp4" poster="img/poster.jpg" controls playsinline preload="none" aria-label="فيلم إيواء لمدراء المخيمات"></video></div>
+    <div class="vbox">
+      <video src="/film1.mp4" poster="/img/poster.jpg" playsinline preload="none" aria-label="فيلم إيواء لمدراء المخيمات"></video>
+      <button type="button" class="play" aria-label="شاهد الفيلم"><span><svg><use href="#i-play"/></svg></span></button>
+    </div>
   </div>
 </section>
 
-<section class="sec" id="install" aria-labelledby="h-in">
+<section class="ch sheet" id="install" aria-labelledby="h8c">
   <div class="wrap">
-    <div class="hd"><span class="no m">05</span><div><h2 id="h-in" class="rv">ثلاث خطوات، وتبدأ العمل.</h2></div></div>
-    <div class="inst">
-      <div class="s rv"><span class="n">١</span><h3>حمّل التطبيق</h3><p>افتح الملف على جوالك، واسمح مرة واحدة «بتثبيت تطبيقات غير معروفة».</p></div>
-      <div class="s rv"><span class="n">٢</span><h3>اطلب التفعيل</h3><p>من شاشة الدخول اختر «مدير مخيم جديد؟ اطلب تفعيل»، فنفعّل مخيمك ونتواصل معك.</p></div>
-      <div class="s rv"><span class="n">٣</span><h3>استورد كشفك</h3><p>أدخل ملف الإكسل الحالي كما هو، وأضف المعاونين بأدوارهم.</p></div>
-      <div class="qr"><img src="img/qr.svg" alt="رمز لتحميل التطبيق" width="150" height="150"><small>امسح الرمز بجوالك للتحميل</small></div>
+    <div class="cno"><b>07</b>التحميل</div>
+    <h2 id="h8c">ملف صغير، <span class="lt">وثلاث شاشات قبل أن تبدأ.</span></h2>
+    <p class="sub">إيواء لا يُحمَّل من متجر جوجل، لذلك يعرض الجوال تحذيرًا معتادًا. هذا ما ستراه بالترتيب:</p>
+    <div class="frames">
+      <div class="fr"><span class="n">1</span><h3>تنبيه التحميل</h3>
+        <div class="dlg" aria-hidden="true"><div><b>قد يكون هذا الملف ضارًا</b>هل تريد الاحتفاظ بالملف eiwaa.apk؟<div class="acts"><span>إلغاء</span><span class="hi">تنزيل على أي حال</span></div></div></div>
+        <p>اختر «تنزيل على أي حال». يظهر هذا التنبيه لكل تطبيق من خارج المتجر.</p></div>
+      <div class="fr"><span class="n">2</span><h3>السماح مرة واحدة</h3>
+        <div class="dlg" aria-hidden="true"><div><b>تثبيت تطبيقات غير معروفة</b>اسمح بالتثبيت من هذا المصدر.<div class="tg"><span>السماح من هذا المصدر</span><i></i></div></div></div>
+        <p>افتح الملف، واضغط «الإعدادات»، ثم فعّل «السماح من هذا المصدر» وارجع.</p></div>
+      <div class="fr"><span class="n">3</span><h3>التثبيت</h3>
+        <div class="dlg" aria-hidden="true"><div><b>إيواء</b>هل تريد تثبيت هذا التطبيق؟<div class="acts"><span>إلغاء</span><span class="hi">تثبيت</span></div></div></div>
+        <p>اضغط «تثبيت»، ثم افتح التطبيق واطلب تفعيل مخيمك من شاشة الدخول.</p></div>
+    </div>
+    <div class="safe">
+      <svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>
+      <div><b>لماذا هو آمن؟</b><p>إيواء موقّع بمفتاح واحد. لا يقبل الجوال أي تحديث له إلا إذا كان موقّعًا بالمفتاح نفسه، والتحديثات تصل من داخل التطبيق.</p></div>
+      <div class="qr"><img src="/img/qr.svg" alt="رمز لتحميل التطبيق" width="120" height="120" loading="lazy"><small>امسح بجوالك</small></div>
     </div>
     <div class="dlrow">
-      <a class="btn b-tarp" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>حمّل إيواء</a>
-      <small>تحميل مباشر · أندرويد 8 فما فوق</small>
+      <a class="btn b-tarp" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk">حمّل إيواء</a>
+      <small>أندرويد 8 فما فوق · يعمل جيدًا على الجوالات القديمة</small>
     </div>
   </div>
 </section>
-</div>
 
-<!-- ============ organisations ============ -->
-<div data-for="org" id="org" hidden>
-<section class="sec film" id="film2" aria-labelledby="h-f2">
+<section class="ch" id="faq" aria-labelledby="h-faq">
   <div class="wrap">
-    <div class="hd"><span class="no m">01</span><div><h2 id="h-f2">منظومة واحدة، لكل المخيمات.</h2><p class="sub">من عشرين شكلًا للكشوفات، إلى نظام واحد ترونه في شاشة واحدة.</p></div></div>
-    <div class="vwide"><video src="film2.mp4" poster="img/poster2.jpg" controls playsinline preload="none" aria-label="فيلم إيواء للمؤسسات"></video></div>
-  </div>
-</section>
-
-<section class="sec" aria-labelledby="h-ch">
-  <div class="wrap">
-    <div class="hd"><span class="no m">02</span><div><h2 id="h-ch" class="rv">كل رقم له مصدر.</h2><p class="sub rv">من الأسرة في خيمتها إلى الرقم في تقرير المانح، بخطوات معروفة.</p></div></div>
-    <ol class="chain rv">
-      <li><h3>الأسرة</h3><p>تُسجَّل مرة واحدة برقم هوية مفحوص</p></li>
-      <li><h3>المعاون</h3><p>يتحقق ويكمل البيانات في الميدان</p></li>
-      <li><h3>مدير المخيم</h3><p>يراجع ويعتمد التغييرات المهمة</p></li>
-      <li><h3>منسّق المشروع</h3><p>يستلم كشفًا نظيفًا برقم مرجعي</p></li>
-      <li><h3>المؤسسة والمانح</h3><p>أرقام حسب العمر والجنس</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="sec alt" aria-labelledby="h-sp">
-  <div class="wrap">
-    <div class="hd"><span class="no m">03</span><div><h2 id="h-sp" class="rv">ما تحصلون عليه.</h2></div></div>
-    <div class="spec">
-      <div class="rv"><span class="m">ID-CHECK</span><h3>منع التكرار</h3><p>فحص رقم الهوية عند كل تسجيل، وتنبيه عند تشابه الأسماء.</p></div>
-      <div class="rv"><span class="m">MATCH</span><h3>مطابقة الكشف الراجع</h3><p>كشف المقبولين بأي شكل يُطابق بأرقام الهوية خلال ثوانٍ.</p></div>
-      <div class="rv"><span class="m">2026/031</span><h3>سجل الصادر</h3><p>رقم وتاريخ وعدد أسطر لكل كشف أُرسل لأي جهة.</p></div>
-      <div class="rv"><span class="m">SADD</span><h3>أرقام حسب العمر والجنس</h3><p>جاهزة لتقارير المانحين مع كل كشف.</p></div>
-      <div class="rv"><span class="m">QA</span><h3>مؤشر جودة البيانات</h3><p>درجة لكل مخيم: أين تثقون وأين تراجعون.</p></div>
-      <div class="rv"><span class="m">ROLES</span><h3>أدوار وصلاحيات</h3><p>مدير ومعاون ومشاهد، وسجل تعديلات لا يُحذف.</p></div>
-      <div class="rv"><span class="m">MULTI</span><h3>لوحة لعدة مخيمات<span class="soon">قريبًا</span></h3><p>مخيمات المشروع في شاشة واحدة، مع كشف التكرار بينها.</p></div>
-    </div>
-    <div class="trust">
-      <div class="rv"><h3>أقل بيانات ممكنة</h3><p>لا صور للهويات، ولا يُجمع إلا ما يحتاجه العمل.</p></div>
-      <div class="rv"><h3>كل مخيم معزول</h3><p>لا يرى أي مخيم بيانات غيره، والقواعد مطبّقة على الخادم.</p></div>
-      <div class="rv"><h3>القرار للمخيم</h3><p>لا يُرسل كشف لأي جهة إلا بقرار مدير المخيم.</p></div>
-    </div>
-    <div class="offer rv">
-      <div><h3>ابدؤوا بمخيم واحد لمدة 60 يومًا.</h3><p>وإن لم يناسبكم، تستلمون كل البيانات في ملف إكسل. البيانات تبقى ملككم.</p></div>
-      <a class="btn b-wa" data-wa="السلام عليكم، نود تجربة إيواء لمخيم واحد" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>اطلبوا تجربة عبر واتساب</a>
-    </div>
-  </div>
-</section>
-</div>
-
-<section class="sec" id="faq" aria-labelledby="h-faq">
-  <div class="wrap">
-    <div class="hd"><span class="no m">FAQ</span><div><h2 id="h-faq">أسئلة شائعة</h2></div></div>
+    <div class="cno"><b>08</b>أسئلة شائعة</div>
+    <h2 id="h-faq">قبل أن تبدأ.</h2>
     <div class="faq">
-      <details><summary>هل التطبيق مجاني؟</summary><p>نعم، مجاني لمدراء المخيمات. وللمؤسسات تجربة 60 يومًا على مخيم واحد.</p></details>
+      <details><summary>هل التطبيق مجاني؟</summary><p>نعم، مجاني لمدراء المخيمات.</p></details>
       <details><summary>هل يعمل بدون إنترنت؟</summary><p>نعم. أول دخول فقط يحتاج إنترنت، وبعدها يعمل كل شيء على الجوال ويُرسل وحده عند عودة الاتصال.</p></details>
       <details><summary>عندي كشف إكسل جاهز، هل أبدأ من الصفر؟</summary><p>لا. استورد ملفك كما هو، ويتعرّف التطبيق على الأعمدة ويعرض الأخطاء في البيانات.</p></details>
-      <details><summary>هل يعمل على الآيفون؟</summary><p>حاليًا على أجهزة أندرويد 8 فما فوق، ويعمل جيدًا على الجوالات القديمة.</p></details>
       <details><summary>من يرى بيانات المخيم؟</summary><p>مدير المخيم وفريقه فقط حسب أدوارهم. ولا يُرسل أي كشف لمؤسسة إلا بقرار مدير المخيم.</p></details>
+      <details><summary>هل يعمل على الآيفون؟</summary><p>حاليًا على أجهزة أندرويد 8 فما فوق.</p></details>
     </div>
   </div>
 </section>
 
-<section class="close" id="contact" aria-labelledby="h-close">
+<section class="close" id="c9" aria-labelledby="h-close">
   <div class="wrap">
     <h2 id="h-close">حتى لا تُنسى أي أسرة.</h2>
-    <p>إيواء… منظومة واحدة، لكل المخيمات.</p>
+    <p class="sub">حمّل إيواء، واطلب تفعيل مخيمك من شاشة الدخول.</p>
     <div class="ctas">
       <a class="btn b-light" href="https://github.com/abood2596/eiwaa-download/releases/latest/download/eiwaa.apk">حمّل التطبيق مجانًا</a>
-      <a class="btn b-wa" data-wa="السلام عليكم، أريد الاستفسار عن إيواء" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z"/></svg>راسل «إيواء» على واتساب</a>
+      <a class="btn b-wa" data-wa="السلام عليكم، أريد الاستفسار عن إيواء" href="#c9">راسل «إيواء» على واتساب</a>
     </div>
-    <p style="margin:26px auto 0;font-size:15px">أو بالبريد: <a class="m" href="mailto:eiwaa.system@proton.me">eiwaa.system@proton.me</a></p>
+    <p class="mail">أو بالبريد: <a class="m" href="mailto:eiwaa.system@proton.me">eiwaa.system@proton.me</a></p>
   </div>
 </section>
 </main>
 
-<footer><div class="wrap"><span>© 2026 إيواء</span><a href="https://github.com/abood2596/eiwaa-download/releases/latest">صفحة الإصدارات</a></div></footer>
+<footer><div class="wrap"><span>© 2026 إيواء</span><a href="/org/">للمؤسسات</a></div></footer>
 
-<script>
-document.body.classList.remove('no-js');
-(function(){
-  var RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  function $(s,r){return (r||document).querySelector(s)}
-  function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+<div class="chooser" id="chooser" role="dialog" aria-modal="true" aria-labelledby="ch-t" hidden>
+  <div class="box">
+    <h2 id="ch-t">جولة إيواء</h2>
+    <p class="lead">دقيقتان بالصوت. اختر ما يناسبك:</p>
+    <div class="two">
+      <button type="button" data-pick="camp">أنا مدير مخيم<small>التسجيل والتحقق والتوزيع</small></button>
+      <button type="button" data-pick="org">أنا من مؤسسة<small>كشوفات نظيفة برقم مرجعي</small></button>
+    </div>
+    <button type="button" class="x">ليس الآن</button>
+  </div>
+</div>
 
-  // WhatsApp Business «إيواء» (the number is never shown as text)
-  var WA=['972','56','750','1850'].join('');
-  $$('[data-wa]').forEach(function(a){a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(a.dataset.wa);a.target='_blank';a.rel='noopener'});
+<div class="tbar" role="region" aria-label="التحكم في الجولة">
+  <div class="in2">
+    <p class="cap" aria-live="polite"></p>
+    <div class="tctl">
+      <div class="tdots"></div>
+      <button type="button" class="tb" data-t="pause" aria-pressed="false"><svg class="i"><use href="#i-pause"/></svg><span class="t">إيقاف مؤقت</span></button>
+      <button type="button" class="tb" data-t="mute" aria-pressed="false"><svg class="i"><use href="#i-vol"/></svg><span class="t">كتم</span></button>
+      <button type="button" class="tb" data-t="cap" aria-pressed="true" aria-label="النص المكتوب"><svg class="i"><use href="#i-cc"/></svg></button>
+      <button type="button" class="tb" data-t="skip"><svg class="i"><use href="#i-skip"/></svg><span class="t">تخطَّ</span></button>
+      <button type="button" class="tb end" data-t="end" aria-label="إنهاء الجولة"><svg class="i"><use href="#i-x"/></svg><span class="t">إنهاء</span></button>
+    </div>
+  </div>
+</div>
 
-  var d=new Date();$('#today').textContent=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear();
-
-  // paths
-  var seg=$('.seg'),pill=$('.seg i'),btns=$$('.seg button');
-  function movePill(){var b=$('.seg [aria-pressed=true]');pill.style.width=b.offsetWidth+'px';pill.style.right=(seg.clientWidth-b.offsetLeft-b.offsetWidth)+'px'}
-  function setPath(p,push){
-    btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.p===p))});
-    $$('[data-for]').forEach(function(el){el.hidden=el.dataset.for!==p});
-    movePill();observe();
-    if(push)history.replaceState(null,'',p==='org'?'#org':location.pathname);
-  }
-  btns.forEach(function(b){b.addEventListener('click',function(){setPath(b.dataset.p,true);window.scrollTo({top:0,behavior:RM?'auto':'smooth'})})});
-  addEventListener('resize',movePill);
-  if(document.fonts)document.fonts.ready.then(movePill);
-
-  // reveal
-  var io='IntersectionObserver' in window?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'}):null;
-  function observe(){$$('.rv:not(.in)').forEach(function(e){io?io.observe(e):e.classList.add('in')})}
-  if(/^#(org|film2)$/.test(location.hash))setPath('org',false);else{movePill();observe()}
-
-  // ID check: Palestinian ID check digit, runs only in the browser
-  function valid(s){if(!/^\d{9}$/.test(s))return false;var t=0;for(var i=0;i<9;i++){var n=+s[i]*(i%2?2:1);t+=n>9?n-9:n}return t%10===0}
-  function mk(b){for(var c=0;c<10;c++)if(valid(b+c))return b+c}
-  var fam=[['F-041','أسرة يوسف ماهر',mk('40136827')],['F-042','أسرة هدى رامي',mk('40258314')],['F-043','أسرة خالد إبراهيم',mk('80371569')],['F-044','أسرة منى شعث',mk('90412736')]];
-  var reg=$('#reg');
-  reg.innerHTML=fam.map(function(f,i){return '<div data-i="'+i+'"><span class="m">'+f[0]+'</span><span>'+f[1]+'</span><span class="m">'+f[2].slice(0,3)+'····'+f[2].slice(7)+'</span></div>'}).join('');
-  var inp=$('#idin'),res=$('#res'),sb=$('#stampbox'),last='';
-  function stamp(cls,txt){if(last===txt)return;last=txt;sb.innerHTML=txt?'<div class="stamp '+cls+(RM?'':' thud')+'">'+txt+'</div>':''}
-  function check(){
-    var v=inp.value.replace(/[٠-٩]/g,function(c){return String('٠١٢٣٤٥٦٧٨٩'.indexOf(c))}).replace(/\D/g,'').slice(0,9);
-    if(inp.value!==v)inp.value=v;
-    $$('div',reg).forEach(function(r){r.classList.remove('hit')});
-    res.className='res';
-    if(!v){res.textContent='يُفحص الرقم على جهازك فقط، ولا يُرسل لأي مكان.';stamp('','');return}
-    if(v.length<9){res.textContent='كتبت '+v.length+' من 9 أرقام';stamp('','');return}
-    var hit=-1;fam.forEach(function(f,i){if(f[2]===v)hit=i});
-    if(hit>=0){$('[data-i="'+hit+'"]',reg).classList.add('hit');res.className='res dup';res.innerHTML='<span><b>مسجّل من قبل</b>في '+fam[hit][1]+' ('+fam[hit][0]+'). لن تُسجَّل الأسرة مرتين.</span>';stamp('s-dup','مكرّر');return}
-    if(!valid(v)){res.className='res bad';res.innerHTML='<span><b>الرقم غير صحيح.</b>راجعه مع صاحب الهوية قبل الحفظ.</span>';stamp('s-bad','راجع الرقم');return}
-    res.className='res ok';res.innerHTML='<span><b>رقم صحيح</b>وغير مسجّل. يمكن الحفظ.</span>';stamp('s-ok','تم التحقق');
-  }
-  inp.addEventListener('input',check);
-  $$('[data-try]').forEach(function(b){b.addEventListener('click',function(){
-    var s=fam[2][2],v=b.dataset.try==='dup'?fam[1][2]:s.slice(0,8)+((+s[8]+3)%10);
-    var i=0;(function t(){inp.value=v.slice(0,++i);check();if(i<9)setTimeout(t,RM?0:45)})();
-  })});
-
-  // before / after
-  var ba=$('#ba'),rg=$('input',ba);
-  function setX(){ba.style.setProperty('--x',rg.value+'%')}
-  rg.addEventListener('input',setX);
-  if(io&&!RM){var nb=new IntersectionObserver(function(es){if(es[0].isIntersecting){nb.disconnect();var seq=[44,36,30,38,50,62,70,64,56,50],k=0;setTimeout(function s(){rg.value=seq[k++];setX();if(k<seq.length)setTimeout(s,70)},400)}},{threshold:.7});nb.observe(ba)}
-
-  // sticky phone
-  var steps=$$('.st'),imgs=$$('.dev img'),dots=$$('.prog b');
-  function act(i){steps.forEach(function(s,k){s.classList.toggle('on',k===i)});imgs.forEach(function(m,k){m.classList.toggle('on',k===i)});dots.forEach(function(x,k){x.classList.toggle('on',k===i)})}
-  act(0);
-  if(io){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)act(+e.target.dataset.i)})},{rootMargin:'-45% 0px -50% 0px'});steps.forEach(function(s){so.observe(s)})}
-
-  // offline demo
-  var sw=$('#sw'),net=$('#net'),ol=$('#ol'),pend=$('#pend'),names=['أسرة سامي عمر','أسرة رنا محمود','أسرة عمر نبيل','أسرة نادر حسن','أسرة ليلى سالم','أسرة إياد خليل'],no=46,q=[];
-  function tagOf(on){return on?'<span class="tag t-ok">أُرسلت</span>':'<span class="tag t-am">على الجوال</span>'}
-  function upd(){pend.textContent=q.length}
-  $('#add').addEventListener('click',function(){
-    var e=$('.empty',ol);if(e)e.remove();
-    var on=sw.getAttribute('aria-checked')==='true',li=document.createElement('li');no++;
-    li.innerHTML='<span class="m">F-0'+no+'</span><span>'+names[(no-47)%names.length]+'</span>'+tagOf(on);
-    ol.insertBefore(li,ol.firstChild);if(!on)q.push(li);
-    while(ol.children.length>5){var x=ol.lastChild;q=q.filter(function(y){return y!==x});ol.removeChild(x)}
-    upd();
-  });
-  sw.addEventListener('click',function(){
-    var on=sw.getAttribute('aria-checked')!=='true';sw.setAttribute('aria-checked',String(on));
-    net.className='net '+(on?'on':'off');net.textContent=on?'متصل':'مقطوع';
-    if(on)(function flush(){if(sw.getAttribute('aria-checked')!=='true')return;var li=q.shift();if(!li){upd();return}li.lastChild.outerHTML=tagOf(true);upd();setTimeout(flush,RM?0:380)})();
-  });
-
-  // one video at a time
-  $$('video').forEach(function(v){v.addEventListener('play',function(){$$('video').forEach(function(o){if(o!==v)o.pause()})})});
-
-  // the page itself opens without internet after the first visit
-  if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
-})();
-</script>
+<script type="application/json" id="lines">{"intro": "إنت مدير مخيّم؟ يعني إنت عارف القصة. الساعة سبعة الصبح، والتلفون ما بيوقّف.", "chaos": "والكشف؟ دفتر، وإكسل، وكل واحد معه نسخة. اسحب الخط، وشوف الفرق.", "chaos_done": "كشف واحد. كل أسرة مسجّلة مرّة وحدة.", "reveal": "خلص. هادا كان زمان. هادا إيواء، مخيّمك كلّه بجيبتك.", "id": "جرّب بإيدك. اكتب رقم هوية، أو اضغط على رقم مسجّل.", "id_ok": "الرقم سليم. والفحص على جوالك، ما بيطلع لأي مكان.", "id_bad": "في غلط بالرقم. إيواء بينبّهك قبل الحفظ، مش بعد التوزيع.", "id_dup": "هاي الأسرة مسجّلة من قبل. خلص، ما في تكرار.", "off": "هلّأ اقطع النت، وسجّل أسرتين.", "off_saved": "انحفظوا عالجوال. رجّع النت.", "off_sync": "وصل كل إشي لحاله. الشغل ما بيوقف.", "j1": "الأسرة بتتسجّل مرّة وحدة.", "j2": "فريقك بيكمّل الناقص، خيمة خيمة.", "j3": "وقت التوزيع، بتمسح البطاقة، وبتعرف مين استلم.", "j4": "والمؤسسة بتستلم كشفها، برقم مرجعي.", "j5": "والمرصد بينبّهك، قبل ما حدا يسألك.", "film": "بدك تشوف يوم كامل؟ هادا الفيلم.", "close": "إيواء مجاني للمخيمات. حمّله، واطلب تفعيل مخيّمك. عشان ما تنتسى ولا أسرة."}</script>
+<script src="/a/e.js" defer></script>
 </body>
 </html>

@@ -24,6 +24,6 @@
   ],
   "shortcuts": [
     { "name": "تحميل التطبيق", "short_name": "تحميل", "url": "/#install", "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }] },
-    { "name": "للمؤسسات", "short_name": "المؤسسات", "url": "/#org", "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }] }
+    { "name": "للمؤسسات", "short_name": "المؤسسات", "url": "/org/", "icons": [{ "src": "/img/icon-192.png", "sizes": "192x192" }] }
   ]
 }
