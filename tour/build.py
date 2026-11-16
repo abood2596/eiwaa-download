@@ -25,7 +25,7 @@ rep = {
   '<meta property="og:title" content="إيواء · سجلّ المخيم كلّه في جوالك">': '<meta property="og:title" content="إيواء · كشوفات نظيفة من كل المخيمات">',
   '<meta property="og:description" content="سجل الأسر، والتحقق الميداني، والتوزيع، وكشوفات المؤسسات. يعمل بدون إنترنت، ومجاني للمخيمات.">':
   '<meta property="og:description" content="كل أسرة مرة واحدة، وكل رقم له مصدر، وكل كشف برقم مرجعي. تجربة 60 يومًا على مخيم واحد.">',
-  f'{base}/img/og.jpg': f'{base}/img/og-org.jpg',
+  f'{base}/img/og.jpg?v=3': f'{base}/img/og-org.jpg?v=3',
   '<meta property="og:image:alt" content="إيواء: سجلّ المخيم كلّه في جوالك">': '<meta property="og:image:alt" content="إيواء: كشوفات نظيفة من كل المخيمات">',
   f'<meta property="og:url" content="{base}/">': f'<meta property="og:url" content="{base}/org/">',
   'data-path="camp"': 'data-path="org"',
