@@ -426,3 +426,13 @@ body{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org
   html{scroll-behavior:auto}
   *,*:before,*:after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-delay:0s!important}
 }
+/* v2.2 review fixes: readable inactive story steps, no labels over the app screen on phones, shorter beat, download first */
+.st{opacity:.5}
+.st.on{opacity:1}
+.dlrow.top{margin:6px 0 26px}
+.dlrow.top small{display:block;margin-top:8px}
+@media (max-width:640px){
+  .hero .chip{display:none}
+  .beat{min-height:0!important;padding-block:72px!important}
+  .beat .w{font-size:clamp(64px,20vw,96px)}
+}
