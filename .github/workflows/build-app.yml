@@ -1,0 +1,105 @@
+# Builds the signed «إيواء» APK here, in the PUBLIC download repository, where GitHub Actions minutes are free.
+# The app's source stays private: it is fetched from abood2596/eiwaa-system during the run only and never stored here.
+# Runs only by hand (Actions → «بناء إيواء» → Run workflow), so nobody else can start it.
+# Needs two secrets in THIS repository (Settings → Secrets and variables → Actions):
+#   SOURCE_TOKEN      fine-grained token: Repository access = only eiwaa-system, Contents = Read-only
+#   SIGNING_PASSWORD  the same signing password as in eiwaa-system
+name: بناء إيواء
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-app
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      MAX_APK_MB: 50
+    steps:
+      - name: Check secrets
+        env:
+          SOURCE_TOKEN: ${{ secrets.SOURCE_TOKEN }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: |
+          [ -n "$SOURCE_TOKEN" ] || { echo "::error::SOURCE_TOKEN secret is missing"; exit 1; }
+          [ -n "$SIGNING_PASSWORD" ] || { echo "::error::SIGNING_PASSWORD secret is missing"; exit 1; }
+
+      - name: Fetch the private source (main)
+        uses: actions/checkout@v4
+        with:
+          repository: abood2596/eiwaa-system
+          ref: main
+          token: ${{ secrets.SOURCE_TOKEN }}
+          path: src
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: src
+
+      # Same version number as the private build of the same commit: commits on main + 100 (always newer than 1.0.58).
+      - name: Version and signing key
+        working-directory: src
+        env:
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+        run: |
+          echo "VERSION_CODE=$(( $(git rev-list --count HEAD) + 100 ))" >> "$GITHUB_ENV"
+          gpg --batch --yes --quiet --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" -d signing/eiwaa-release.jks.gpg > "$RUNNER_TEMP/release.jks"
+          {
+            echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks"
+            echo "KEYSTORE_PASSWORD=$SIGNING_PASSWORD"
+            echo "KEY_ALIAS=eiwaa"
+            echo "KEY_PASSWORD=$SIGNING_PASSWORD"
+          } >> "$GITHUB_ENV"
+
+      - name: Unit tests
+        working-directory: src
+        run: ./gradlew --no-daemon -q testDebugUnitTest --tests "ps.eiwaa.app.AttackTest" --tests "ps.eiwaa.app.AnyRegisterTest" --tests "ps.eiwaa.app.SecurityTest" --tests "ps.eiwaa.app.ImporterTest" --tests "ps.eiwaa.app.InsightsTest" --tests "ps.eiwaa.app.DedupeTest" --tests "ps.eiwaa.app.BuilderTest" --tests "ps.eiwaa.app.BrainTest" --tests "ps.eiwaa.app.MessagingTest"
+
+      - name: Build release APK
+        working-directory: src
+        run: ./gradlew --no-daemon -q assembleRelease
+
+      - name: Check APK size
+        id: apk
+        run: |
+          APK=src/app/build/outputs/apk/release/app-release.apk
+          BYTES=$(stat -c%s "$APK")
+          MB=$(awk "BEGIN {printf \"%.1f\", $BYTES/1048576}")
+          echo "APK size: ${MB} MB"
+          if [ "$BYTES" -gt $((MAX_APK_MB*1024*1024)) ]; then echo "::error::APK is ${MB} MB, over ${MAX_APK_MB} MB"; exit 1; fi
+          NAME="eiwaa-1.0.${VERSION_CODE}.apk"
+          cp "$APK" "$NAME"; cp "$APK" eiwaa.apk
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"; echo "mb=$MB" >> "$GITHUB_OUTPUT"
+
+      - name: Publish on the download page
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ env.VERSION_CODE }}
+          name: إيواء 1.0.${{ env.VERSION_CODE }}
+          make_latest: "true"
+          files: |
+            eiwaa.apk
+            ${{ steps.apk.outputs.name }}
+          body: |
+            **إيواء** — نظام إدارة مخيمات ومراكز الإيواء (نسخة 1.0.${{ env.VERSION_CODE }}، ${{ steps.apk.outputs.mb }} ميغا).
+            1. نزّل ملف eiwaa.apk وافتحه على الجوال (اسمح «تثبيت تطبيقات غير معروفة» مرة واحدة).
+            2. مدير مخيم جديد: «اطلب تفعيل». المعاون: ادخل بالحساب الذي أعطاك إياه مدير المخيم.
+            © Abdulhamid Al-Farra — جميع الحقوق محفوظة.
+
+      - name: Clean up
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/release.jks" src
