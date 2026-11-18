@@ -51,12 +51,16 @@ jobs:
           build-root-directory: src
 
       # Same version number as the private build of the same commit: commits on main + 100 (always newer than 1.0.58).
+      # The name follows the app (versionName in app/build.gradle.kts, e.g. 2.0.<number>).
       - name: Version and signing key
         working-directory: src
         env:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: |
-          echo "VERSION_CODE=$(( $(git rev-list --count HEAD) + 100 ))" >> "$GITHUB_ENV"
+          CODE=$(( $(git rev-list --count HEAD) + 100 ))
+          MAJOR=$(grep -oE 'versionName = "[0-9]+\.[0-9]+' app/build.gradle.kts | grep -oE '[0-9]+\.[0-9]+' | head -1); MAJOR=${MAJOR:-2.0}
+          echo "VERSION_CODE=$CODE" >> "$GITHUB_ENV"
+          echo "VERSION_NAME=$MAJOR.$CODE" >> "$GITHUB_ENV"
           gpg --batch --yes --quiet --pinentry-mode loopback --passphrase "$SIGNING_PASSWORD" -d signing/eiwaa-release.jks.gpg > "$RUNNER_TEMP/release.jks"
           {
             echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks"
@@ -65,9 +69,13 @@ jobs:
             echo "KEY_PASSWORD=$SIGNING_PASSWORD"
           } >> "$GITHUB_ENV"
 
+      # The same unit tests as the private CI (read from its workflow, so a new test is never forgotten here).
       - name: Unit tests
         working-directory: src
-        run: ./gradlew --no-daemon -q testDebugUnitTest --tests "ps.eiwaa.app.AttackTest" --tests "ps.eiwaa.app.AnyRegisterTest" --tests "ps.eiwaa.app.SecurityTest" --tests "ps.eiwaa.app.ImporterTest" --tests "ps.eiwaa.app.InsightsTest" --tests "ps.eiwaa.app.DedupeTest" --tests "ps.eiwaa.app.BuilderTest" --tests "ps.eiwaa.app.BrainTest" --tests "ps.eiwaa.app.MessagingTest"
+        run: |
+          TESTS=$(grep -o -- '--tests "[^"]*"' .github/workflows/android.yml | sort -u | tr '\n' ' ')
+          echo "Tests: $TESTS"
+          eval ./gradlew --no-daemon -q testDebugUnitTest $TESTS
 
       - name: Build release APK
         working-directory: src
@@ -81,21 +89,21 @@ jobs:
           MB=$(awk "BEGIN {printf \"%.1f\", $BYTES/1048576}")
           echo "APK size: ${MB} MB"
           if [ "$BYTES" -gt $((MAX_APK_MB*1024*1024)) ]; then echo "::error::APK is ${MB} MB, over ${MAX_APK_MB} MB"; exit 1; fi
-          NAME="eiwaa-1.0.${VERSION_CODE}.apk"
+          NAME="eiwaa-${VERSION_NAME}.apk"
           cp "$APK" "$NAME"; cp "$APK" eiwaa.apk
           echo "name=$NAME" >> "$GITHUB_OUTPUT"; echo "mb=$MB" >> "$GITHUB_OUTPUT"
 
       - name: Publish on the download page
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.${{ env.VERSION_CODE }}
-          name: إيواء 1.0.${{ env.VERSION_CODE }}
+          tag_name: v${{ env.VERSION_NAME }}
+          name: إيواء ${{ env.VERSION_NAME }}
           make_latest: "true"
           files: |
             eiwaa.apk
             ${{ steps.apk.outputs.name }}
           body: |
-            **إيواء** — نظام إدارة مخيمات ومراكز الإيواء (نسخة 1.0.${{ env.VERSION_CODE }}، ${{ steps.apk.outputs.mb }} ميغا).
+            **إيواء** — نظام إدارة مخيمات ومراكز الإيواء (نسخة ${{ env.VERSION_NAME }}، ${{ steps.apk.outputs.mb }} ميغا).
             1. نزّل ملف eiwaa.apk وافتحه على الجوال (اسمح «تثبيت تطبيقات غير معروفة» مرة واحدة).
             2. مدير مخيم جديد: «اطلب تفعيل». المعاون: ادخل بالحساب الذي أعطاك إياه مدير المخيم.
             © Abdulhamid Al-Farra — جميع الحقوق محفوظة.
